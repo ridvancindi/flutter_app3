@@ -32,6 +32,7 @@ dependencies:
   path_provider: any
   intl: ^0.17.0
   cool_alert: ^1.1.0
+  flip_card: ^0.5.0
 
 dev_dependencies:
   flutter_test:

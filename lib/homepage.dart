@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app3/addData.dart';
 import 'package:flutter_app3/detailpage.dart';
@@ -16,9 +17,14 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  List<Data>? allData;
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  List<int> isActive = [];
   List<Data>? data;
+  List<Data>? active;
+  bool asd = false;
+  List<Data>? notactive;
+  TabController? tabController;
   final GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey<ScaffoldState>();
   DbHelper? _databaseHelper;
   int count = 0;
@@ -26,6 +32,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _databaseHelper = DbHelper();
+    tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -37,53 +44,35 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       key: _scaffoldkey,
       appBar: AppBar(
-          title: Text(
-        "AnaSayfa",
-        style: TextStyle(color: Colors.white),
-      )),
-      body: Container(
-        child: Column(children: [
-          Expanded(
-            child: ListView.builder(
-                itemCount: data!.length,
-                itemBuilder: (context, index) {
-                  int deneme = data![index].isActive;
-                  return Card(
-                    elevation: 5,
-                    margin: EdgeInsets.only(top: 15),
-                    child: ListTile(
-                        title: Text(data![index].name),
-                        subtitle: Text(data![index].surname),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            GestureDetector(
-                                onTap: () async {
-                                  setState(() {});
-                                  bool result = await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            upgrateData(data![index])),
-                                  );
-                                  if (result) {}
-                                },
-                                child: Icon(Icons.edit)),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                                onTap: () {
-                                  delete(data![index].id, index);
-                                },
-                                child: Icon(
-                                  Icons.delete,
-                                  color: Colors.red.shade400,
-                                )),
-                          ],
-                        ),
-                        leading: GestureDetector(
-                          child: Checkbox(
+        title: Text(
+          "AnaSayfa",
+          style: TextStyle(color: Colors.white),
+        ),
+        bottom: TabBar(controller: tabController, labelColor: Colors.white,labelStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w800),tabs: [
+          Tab(
+            text: "Aktiler",
+          ),
+          Tab(
+            text: "Pasifler",
+          ),
+        ]),
+      ),
+      body: TabBarView(controller: tabController, children: [
+        Container(
+          child: Column(children: [
+            Expanded(
+              child: ListView.builder(
+                  itemCount: active!.length,
+                  itemBuilder: (context, index) {
+                    bool _active = true;
+                    int deneme = active![index].isActive;
+                    return FlipCard(
+                      direction: FlipDirection.HORIZONTAL,
+                      front: Card(
+                        child: ListTile(
+                          title: Text(active![index].name ,style: TextStyle(color: Colors.black ,fontSize: 17,fontWeight: FontWeight.w400)),
+                          trailing: Text(active![index].surname),
+                          leading: Checkbox(
                             checkColor: Colors.white,
                             value: deneme == 0 ? false : true,
                             onChanged: (bool? value) async {
@@ -91,26 +80,144 @@ class _HomePageState extends State<HomePage> {
                                 deneme = value == true ? 0 : 1;
                                 _upgrateData(
                                     Data.withId(
-                                        data![index].id,
-                                        data![index].name,
-                                        data![index].surname,
+                                        active![index].id,
+                                        active![index].name,
+                                        active![index].surname,
                                         value == true ? 1 : 0),
-                                    data![index].name);
-                                data![index].isActive = value == false ? 0 : 1;
+                                    active![index].name);
+                                active!.clear();
+                                data!.clear();
+                                getData();
                               });
                             },
                           ),
-                        )
-
-                        // onTap: () {
-                        //   goDetail(data![index], data![index].id);
-                        // },
                         ),
-                  );
-                }),
-          ),
-        ]),
-      ),
+                      ),
+                      back: Card(
+                          margin: EdgeInsets.only(top: 15),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10, bottom: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Colors.purple),
+                                    onPressed: () async {
+                                      setState(() {});
+                                      bool result = await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                upgrateData(active![index])),
+                                      );
+                                      if (result) {}
+                                    },
+                                    child: Text(
+                                      "Düzenle",
+                                      style: TextStyle(color: Colors.white),
+                                    )),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Colors.red),
+                                    onPressed: () {
+                                      delete(active![index].id, index);
+                                    },
+                                    child: Text("Sil",
+                                        style: TextStyle(color: Colors.white)))
+                              ],
+                            ),
+                          )),
+                    );
+                  }),
+            ),
+          ]),
+        ),
+        Container(
+          child: Column(children: [
+            Expanded(
+              child: ListView.builder(
+                  itemCount: data!.length,
+                  itemBuilder: (context, index) {
+                    int deneme = data![index].isActive;
+                    return FlipCard(
+                      front: Card(
+                        elevation: 5,
+                        margin: EdgeInsets.only(top: 15),
+                        child: ListTile(
+                            title: Text(data![index].name),
+                            trailing: Text(data![index].surname),
+                            leading: GestureDetector(
+                              child: Checkbox(
+                                checkColor: Colors.white,
+                                value: deneme == 0 ? false : true,
+                                onChanged: (bool? value) async {
+                                  setState(() {
+                                    deneme = value == true ? 0 : 1;
+                                    _upgrateData(
+                                        Data.withId(
+                                            data![index].id,
+                                            data![index].name,
+                                            data![index].surname,
+                                            value == true ? 1 : 0),
+                                        data![index].name);
+                                    active!.clear();
+                                    data!.clear();
+                                    getData();
+                                  });
+                                },
+                              ),
+                            )
+                            ),
+                      ),
+                      back: Card(
+                          elevation: 5,
+                          margin: EdgeInsets.only(top: 15),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10, bottom: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Colors.purple),
+                                    onPressed: () async {
+                                      setState(() {});
+                                      bool result = await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                upgrateData(data![index])),
+                                      );
+                                      if (result) {}
+                                    },
+                                    child: Text(
+                                      "Düzenle",
+                                      style: TextStyle(color: Colors.white),
+                                    )),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Colors.red),
+                                    onPressed: () {
+                                      delete(data![index].id, index);
+                                    },
+                                    child: Text("Sil",
+                                        style: TextStyle(color: Colors.white)))
+                              ],
+                            ),
+                          )),
+                    );
+                  }),
+            ),
+          ]),
+        ),
+      ]),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           setState(() {});
@@ -136,12 +243,18 @@ class _HomePageState extends State<HomePage> {
       var proFuture = _databaseHelper!.allData();
       proFuture.then((value) {
         List<Data> productsData = [];
+        List<Data> activeData = [];
         count = value.length;
         for (var i = 0; i < count; i++) {
-          productsData.add(Data.dbdenOkunanDeger(value[i]));
+          if (Data.dbdenOkunanDeger(value[i]).isActive != 0) {
+            activeData.add(Data.dbdenOkunanDeger(value[i]));
+          } else {
+            productsData.add(Data.dbdenOkunanDeger(value[i]));
+          }
         }
         setState(() {
           data = productsData;
+          active = activeData;
           count = count;
         });
       });
@@ -159,14 +272,14 @@ class _HomePageState extends State<HomePage> {
           productsData.add(Data.dbdenOkunanDeger(value[i]));
         }
         setState(() {
-          data = productsData;
+          active = productsData;
           count = count;
         });
       });
     });
   }
 
-  void _upgrateData(Data data, String name) async {
+  Future _upgrateData(Data data, String name) async {
     var sonuc = await _databaseHelper!.dataUpgrate(data, name);
   }
 
@@ -181,7 +294,7 @@ class _HomePageState extends State<HomePage> {
           productsData.add(Data.dbdenOkunanDeger(value[i]));
         }
         setState(() {
-          data = productsData;
+          notactive = productsData;
           count = count;
         });
       });
