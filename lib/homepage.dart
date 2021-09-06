@@ -4,7 +4,9 @@ import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app3/addData.dart';
 import 'package:flutter_app3/detailpage.dart';
+import 'package:flutter_app3/main.dart';
 import 'package:flutter_app3/upgrateData.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'db/dbHelper.dart';
 import 'models/data.dart';
@@ -37,9 +39,14 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    if (data == null) {
+    
+    if (data == null && active == null) {
       data = <Data>[];
+      active = <Data>[];
       getData();
+    }
+    if (active!.length>0) {
+      showWeeklyAtDayAndTime();
     }
     return Scaffold(
       key: _scaffoldkey,
@@ -48,14 +55,18 @@ class _HomePageState extends State<HomePage>
           "AnaSayfa",
           style: TextStyle(color: Colors.white),
         ),
-        bottom: TabBar(controller: tabController, labelColor: Colors.white,labelStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w800),tabs: [
-          Tab(
-            text: "Aktiler",
-          ),
-          Tab(
-            text: "Pasifler",
-          ),
-        ]),
+        bottom: TabBar(
+            controller: tabController,
+            labelColor: Colors.white,
+            labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+            tabs: [
+              Tab(
+                text: "Aktiler",
+              ),
+              Tab(
+                text: "Pasifler",
+              ),
+            ]),
       ),
       body: TabBarView(controller: tabController, children: [
         Container(
@@ -70,7 +81,11 @@ class _HomePageState extends State<HomePage>
                       direction: FlipDirection.HORIZONTAL,
                       front: Card(
                         child: ListTile(
-                          title: Text(active![index].name ,style: TextStyle(color: Colors.black ,fontSize: 17,fontWeight: FontWeight.w400)),
+                          title: Text(active![index].name,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w400)),
                           trailing: Text(active![index].surname),
                           leading: Checkbox(
                             checkColor: Colors.white,
@@ -87,8 +102,9 @@ class _HomePageState extends State<HomePage>
                                     active![index].name);
                                 active!.clear();
                                 data!.clear();
-                                getData();
-                              });
+                               
+                              }); 
+                              getData();
                             },
                           ),
                         ),
@@ -170,8 +186,7 @@ class _HomePageState extends State<HomePage>
                                   });
                                 },
                               ),
-                            )
-                            ),
+                            )),
                       ),
                       back: Card(
                           elevation: 5,
@@ -219,15 +234,16 @@ class _HomePageState extends State<HomePage>
         ),
       ]),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          setState(() {});
-          bool result = await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => addData()),
-          );
-          if (result) {
-            getData();
-          }
+        onPressed: () async {  
+          showWeeklyAtDayAndTime();  
+           setState(() {});
+           bool result = await Navigator.push(
+             context,
+             MaterialPageRoute(builder: (context) => addData()),
+           );
+           if (result) {
+             getData();
+           }
         },
         child: Icon(
           Icons.add,
@@ -326,5 +342,27 @@ class _HomePageState extends State<HomePage>
   void upgrate(Data product) async {
     bool result = await Navigator.push(
         context, MaterialPageRoute(builder: (context) => upgrateData(product)));
+  }
+  Future<void> showWeeklyAtDayAndTime() async {
+    var time = DateTime.now().add(Duration(seconds: 600));
+    var androidChannelSpecifics = AndroidNotificationDetails(
+      'CHANNEL_ID_TIME',
+      'CHANNEL_NAME_TIME',
+      "CHANNEL_DESCRIPTION_TIME",
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+    var iosChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics =
+        NotificationDetails(android: androidChannelSpecifics, iOS: iosChannelSpecifics);
+    await flutterLocalNotificationsPlugin.schedule(
+      0,
+      'Test Bildirim Başlık',
+      'Test Bildirim Açıklama',
+      time,
+      platformChannelSpecifics,
+      payload: "sa"
+    );
+    
   }
 }
