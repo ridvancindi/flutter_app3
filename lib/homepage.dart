@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app3/Notification.dart';
 import 'package:flutter_app3/addData.dart';
 import 'package:flutter_app3/detailpage.dart';
 import 'package:flutter_app3/main.dart';
@@ -33,10 +34,19 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
+    localNotifyManager.setOnNotificationRecive(onNotificationReceive);
+    //localNotifyManager.setOnNotificationClick(onNotificationClick);
     _databaseHelper = DbHelper();
     tabController = TabController(length: 2, vsync: this);
   }
-
+  onNotificationReceive(ReceiveNotification notification)
+  {
+    print("Notifacation Received ");
+  }
+  // onNotificationClick(String payload)
+  // {
+  //   print("$payload");
+  // }
   @override
   Widget build(BuildContext context) {
     
@@ -46,7 +56,10 @@ class _HomePageState extends State<HomePage>
       getData();
     }
     if (active!.length>0) {
-      showWeeklyAtDayAndTime();
+     for (var i = 0; i < active!.length; i++) {
+       localNotifyManager.showNotification(active![i].name , active![i].id);
+      // showWeeklyAtDayAndTime(active![i].name,active![i].id);
+     }
     }
     return Scaffold(
       key: _scaffoldkey,
@@ -234,8 +247,7 @@ class _HomePageState extends State<HomePage>
         ),
       ]),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {  
-          showWeeklyAtDayAndTime();  
+        onPressed: () async {       
            setState(() {});
            bool result = await Navigator.push(
              context,
@@ -343,26 +355,26 @@ class _HomePageState extends State<HomePage>
     bool result = await Navigator.push(
         context, MaterialPageRoute(builder: (context) => upgrateData(product)));
   }
-  Future<void> showWeeklyAtDayAndTime() async {
-    var time = DateTime.now().add(Duration(seconds: 600));
-    var androidChannelSpecifics = AndroidNotificationDetails(
-      'CHANNEL_ID_TIME',
-      'CHANNEL_NAME_TIME',
-      "CHANNEL_DESCRIPTION_TIME",
-      importance: Importance.max,
-      priority: Priority.high,
-    );
-    var iosChannelSpecifics = IOSNotificationDetails();
-    var platformChannelSpecifics =
-        NotificationDetails(android: androidChannelSpecifics, iOS: iosChannelSpecifics);
-    await flutterLocalNotificationsPlugin.schedule(
-      0,
-      'Test Bildirim Başlık',
-      'Test Bildirim Açıklama',
-      time,
-      platformChannelSpecifics,
-      payload: "sa"
-    );
+  // Future<void> showWeeklyAtDayAndTime(String asd,int id) async {
+  //   var time = Time(11,45,0);
+  //   var androidChannelSpecifics = AndroidNotificationDetails(
+  //     'CHANNEL_ID_TIME',
+  //     'CHANNEL_NAME_TIME',
+  //     "CHANNEL_DESCRIPTION_TIME",
+  //     importance: Importance.max,
+  //     priority: Priority.high,
+  //   );
+  //   var iosChannelSpecifics = IOSNotificationDetails();
+  //   var platformChannelSpecifics =
+  //       NotificationDetails(android: androidChannelSpecifics, iOS: iosChannelSpecifics);
+  //   await flutterLocalNotificationsPlugin.showDailyAtTime(
+  //     id,
+  //     asd,
+  //     'Test Bildirim Açıklama',
+  //     time,
+  //     platformChannelSpecifics,
+  //     payload: "sa"
+  //   );
     
-  }
+  // }
 }

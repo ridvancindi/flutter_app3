@@ -163,7 +163,7 @@ class _addDataState extends State<addData> {
                             setState(() {
                               if (_formKey.currentState!.validate()) {
                                 var asd =
-                                    addData(Data(_name.text,_surname.text, 0), _name.text);
+                                    addData(Data(_name.text,_surname.text, 1), _name.text);
                               } else {}
                             });
                           }),
