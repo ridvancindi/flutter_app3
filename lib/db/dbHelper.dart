@@ -41,7 +41,6 @@ class DbHelper {
   Future<int> addData(Data data,String name) async {
     var db = await _getDatabase();
     var son = await db.rawQuery("SELECT * FROM $tbldata WHERE $colname = '$name'");
-    print(son);
      if (son.length > 0) {
        return 0;
      } else {
@@ -72,7 +71,6 @@ class DbHelper {
   Future<int> dataUpgrate(Data data, String name) async{
     var db = await _getDatabase();
     var son = await db.rawQuery("SELECT * FROM $tbldata WHERE $colname = '$name' AND $colid != ${data.id}");
-    print(son);
      if (son.length>0) {
        return 0;
      } else if(son.length == 0){ 

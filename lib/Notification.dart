@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app3/main.dart';
-
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:io' show Platform;
 import 'package:rxdart/subjects.dart';
@@ -8,17 +6,17 @@ import 'package:rxdart/subjects.dart';
 class LocalNotifyManager {
   FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
   var initSetting;
+  
   BehaviorSubject<ReceiveNotification> get didReceiveLocalNotificationSubject =>
       BehaviorSubject<ReceiveNotification>();
 
-  LocalNotifyManager.init() {
+  LocalNotifyManager.init(){
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     if (Platform.isIOS) {
       requestIOSPermission();
     }
     initializePlatform();
   }
-
   requestIOSPermission() {
     flutterLocalNotificationsPlugin!
         .resolvePlatformSpecificImplementation<
@@ -27,7 +25,7 @@ class LocalNotifyManager {
   }
 
   initializePlatform() {
-    var initSettingAndroid = AndroidInitializationSettings("codex_logo");
+    var initSettingAndroid = AndroidInitializationSettings('app_icon');
     var initSettingIos = IOSInitializationSettings(
         requestAlertPermission: true,
         requestBadgePermission: true,
@@ -54,7 +52,7 @@ class LocalNotifyManager {
   }
 
   Future<void> showNotification(String title, int id) async {
-    var time = DateTime.now().add(Duration(seconds:30));
+    var time = DateTime.now().add(Duration(seconds:10));
     var androidChannel = AndroidNotificationDetails(
       'CHANNEL_ID',
       'CHANNEL_NAME',
@@ -67,6 +65,21 @@ class LocalNotifyManager {
         NotificationDetails(android: androidChannel, iOS: iosChannelSpecifics);
     await flutterLocalNotificationsPlugin!.schedule(
         id, title, 'Test Bildirim Açıklama', time,platformChannelSpecifics,
+        payload: "New Payload");
+  }
+  Future<void> show(String title, int id) async {
+    var androidChannel = AndroidNotificationDetails(
+      'CHANNEL_ID',
+      'CHANNEL_NAME',
+      "CHANNEL_DESCRIPTION",
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+    var iosChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics =
+        NotificationDetails(android: androidChannel, iOS: iosChannelSpecifics);
+    await flutterLocalNotificationsPlugin!.show(
+        id, title, 'Test Bildirim Açıklama',platformChannelSpecifics,
         payload: "New Payload");
   }
 }

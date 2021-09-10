@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app3/db/dbHelper.dart';
 import 'package:flutter_app3/models/data.dart';
 import 'package:flutter_app3/upgrateData.dart';
-import 'package:intl/intl.dart';
 
 class DetailPage extends StatefulWidget {
   Data data;
@@ -18,13 +17,11 @@ class _DetailPageState extends State<DetailPage> {
   Data? data;
   dynamic back = false;
   _DetailPageState(this.data);
-  DbHelper? _databaseHelper;
   int count = 0;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _databaseHelper = DbHelper();
   }
 
   @override
@@ -243,13 +240,12 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   void upgrate(Data product) async {
-    bool result = await Navigator.push(
+    await Navigator.push(
         context, MaterialPageRoute(builder: (context) => upgrateData(product)));
   }
 
   void delete() async {
     int result;
-    int result2;
     back = true;
     Navigator.pop(context, back);
     result = await _dbHelper!.dataDelete(data!.id);

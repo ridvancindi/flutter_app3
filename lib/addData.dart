@@ -1,11 +1,6 @@
-import 'dart:convert';
-
-import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app3/db/dbHelper.dart';
 import 'package:flutter_app3/models/data.dart';
-import 'package:intl/intl.dart';
-
 class addData extends StatefulWidget {
   addData({Key? key}) : super(key: key);
 
@@ -23,7 +18,6 @@ class _addDataState extends State<addData> {
   var _formKey = GlobalKey<FormState>();
   DbHelper? _databaseHelper;
   List<Data>? allData;
-  var _key = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
@@ -162,8 +156,7 @@ class _addDataState extends State<addData> {
                           onPressed: () {
                             setState(() {
                               if (_formKey.currentState!.validate()) {
-                                var asd =
-                                    addData(Data(_name.text,_surname.text, 1), _name.text);
+                                addData(Data(_name.text,_surname.text, 1), _name.text);
                               } else {}
                             });
                           }),

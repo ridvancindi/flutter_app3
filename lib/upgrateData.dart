@@ -1,15 +1,6 @@
-import 'dart:convert';
-import 'dart:ffi';
-
-import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app3/addData.dart';
 import 'package:flutter_app3/db/dbHelper.dart';
-import 'package:flutter_app3/homepage.dart';
 import 'package:flutter_app3/models/data.dart';
-import 'package:intl/intl.dart';
-
-import 'detailpage.dart';
 
 class upgrateData extends StatefulWidget {
   Data data;
@@ -29,7 +20,6 @@ class _upgrateDataState extends State<upgrateData> {
   String? name;
   DbHelper? _databaseHelper;
   List<Data>? allData;
-  var _key = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
@@ -177,7 +167,6 @@ class _upgrateDataState extends State<upgrateData> {
     var sonuc = await _databaseHelper!.dataUpgrate(data, name);
     if (sonuc != 0) {
        Navigator.of(context).pop(true);
-      Navigator.of(context).pop(true);
     } else {
       error = sonuc;
     }
