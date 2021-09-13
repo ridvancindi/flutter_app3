@@ -25,13 +25,13 @@ class LocalNotifyManager {
   }
 
   initializePlatform() {
-    var initSettingAndroid = AndroidInitializationSettings('app_icon');
+    var initSettingAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
     var initSettingIos = IOSInitializationSettings(
         requestAlertPermission: true,
-        requestBadgePermission: true,
+        requestBadgePermission: false,
         onDidReceiveLocalNotification: (id, title, body, payload) async {
           ReceiveNotification notification = ReceiveNotification(
-              id: id, title: title, body: body, payload: payload);
+              id: id, title: title, body: body);
           didReceiveLocalNotificationSubject.add(notification);
         });
     var initSetting = InitializationSettings(
@@ -51,37 +51,41 @@ class LocalNotifyManager {
     });
   }
 
-  Future<void> showNotification(String title, int id) async {
-    var time = DateTime.now().add(Duration(seconds:10));
+  Future<void> showNightNotification(String title, String subtitle, int id) async {
+    var time = Time(21,00,00);
     var androidChannel = AndroidNotificationDetails(
       'CHANNEL_ID',
       'CHANNEL_NAME',
       "CHANNEL_DESCRIPTION",
       importance: Importance.max,
       priority: Priority.high,
+      playSound: false,
+      icon: "@mipmap/ic_launcher",
     );
     var iosChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics =
         NotificationDetails(android: androidChannel, iOS: iosChannelSpecifics);
-    await flutterLocalNotificationsPlugin!.schedule(
-        id, title, 'Test Bildirim Açıklama', time,platformChannelSpecifics,
-        payload: "New Payload");
+    await flutterLocalNotificationsPlugin!.showDailyAtTime(
+        id, title, subtitle, time,platformChannelSpecifics);
   }
-  Future<void> show(String title, int id) async {
+  Future<void> showDayTimeNotification(String title, String subtitle, int id) async {
+    var time = Time(09,00,00);
     var androidChannel = AndroidNotificationDetails(
       'CHANNEL_ID',
       'CHANNEL_NAME',
       "CHANNEL_DESCRIPTION",
       importance: Importance.max,
       priority: Priority.high,
+      playSound: false,
+      icon: "@mipmap/ic_launcher",
     );
     var iosChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics =
         NotificationDetails(android: androidChannel, iOS: iosChannelSpecifics);
-    await flutterLocalNotificationsPlugin!.show(
-        id, title, 'Test Bildirim Açıklama',platformChannelSpecifics,
-        payload: "New Payload");
+    await flutterLocalNotificationsPlugin!.showDailyAtTime(
+        id, title, subtitle, time,platformChannelSpecifics);
   }
+  
 }
 
 LocalNotifyManager localNotifyManager = LocalNotifyManager.init();
@@ -90,11 +94,9 @@ class ReceiveNotification {
   final int? id;
   final String? title;
   final String? body;
-  final String? payload;
 
   ReceiveNotification(
       {@required this.id,
       @required this.title,
-      @required this.body,
-      @required this.payload});
+      @required this.body});
 }

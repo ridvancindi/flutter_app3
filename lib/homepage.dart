@@ -48,7 +48,8 @@ class _HomePageState extends State<HomePage>
       for (var i = 0; i < data!.length; i++) {
         if (data![i].isActive == 1) {
           //showWeeklyAtDayAndTime(data![i].name,data![i].id);
-          localNotifyManager.showNotification(data![i].name , data![i].id);
+          localNotifyManager.showNightNotification(data![i].name , data![i].surname,data![i].id);
+          localNotifyManager.showDayTimeNotification(data![i].name , data![i].surname,data![i].id);
         }
         //localNotifyManager.showNotification(active![i].name , active![i].id);
         // 

@@ -11,6 +11,8 @@ class DbHelper {
   String colname = "name";
   String colsurname = "surname";
   String colactive = "isactive";
+  String colnotification = "notification";
+  String tblsettings = "settings";
   static final DbHelper _dbHelper = DbHelper._internal();
   DbHelper._internal();
   factory DbHelper() {
@@ -36,6 +38,8 @@ class DbHelper {
   void _createDb(Database db, int version) async {
     await db.execute(
         "CREATE TABLE $tbldata ($colid INTEGER PRIMARY KEY AUTOINCREMENT, $colname text NULL, $colsurname text NULL,$colactive int NULL)");
+     await db.execute(
+        "CREATE TABLE $tblsettings ($colnotification INTEGER DEFAULT 1)");
   }
 
   Future<int> addData(Data data,String name) async {
