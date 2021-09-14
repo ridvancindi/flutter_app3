@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app3/Notification.dart';
 import 'package:flutter_app3/addData.dart';
 import 'package:flutter_app3/detailpage.dart';
+import 'package:flutter_app3/models/settings.dart';
 import 'package:flutter_app3/upgrateData.dart';
 import 'db/dbHelper.dart';
 import 'models/data.dart';
@@ -18,9 +19,11 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   List<Data>? data;
   TabController? tabController;
+  List<Settings>? notification;
   final GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey<ScaffoldState>();
   DbHelper? _databaseHelper;
   int count = 0;
+  int count2 = 0;
   @override
   void initState() {
     super.initState();
@@ -40,19 +43,23 @@ class _HomePageState extends State<HomePage>
   // }
   @override
   Widget build(BuildContext context) {
+    getNotificationData();
     getData();
     if (data == null) {
       data = <Data>[];
+      notification = <Settings>[];
     }
-    if (data!.length > 0) {
+    if (data!.length > 0 && notification![0].notification == 1) {
       for (var i = 0; i < data!.length; i++) {
         if (data![i].isActive == 1) {
           //showWeeklyAtDayAndTime(data![i].name,data![i].id);
-          localNotifyManager.showNightNotification(data![i].name , data![i].surname,data![i].id);
-          localNotifyManager.showDayTimeNotification(data![i].name , data![i].surname,data![i].id);
+          localNotifyManager.showNightNotification(
+              data![i].name, data![i].surname, data![i].id);
+           localNotifyManager.showDayTimeNotification(
+               data![i].name, data![i].surname, data![i].id);
         }
         //localNotifyManager.showNotification(active![i].name , active![i].id);
-        // 
+        //
       }
     }
     return Scaffold(
@@ -293,6 +300,32 @@ class _HomePageState extends State<HomePage>
     });
   }
 
+  void getNotificationData() {
+    var dbFuture = _databaseHelper!.initializeDatabase();
+    dbFuture.then((value) {
+      var proFuture = _databaseHelper!.notificationData();
+      proFuture.then((value) {
+        List<Settings> _notification = [];
+        count2 = value.length;
+        for (var i = 0; i < count2; i++) {
+          _notification.add(Settings.dbdenOkunanDeger(value[i]));
+        }
+        setState(() {
+          notification = _notification;
+          count2 = count2;
+        });
+      });
+    });
+  }
+  void _upgrateNotification(Settings data) async {
+    var sonuc = await _databaseHelper!.notificationUpgrate(data);
+    if (sonuc != 0) {
+       print("Başarılı");
+    } else {
+      print("Hata Var");
+    }
+  }
+
   Future _upgrateData(Data data, String name) async {
     var sonuc = await _databaseHelper!.dataUpgrate(data, name);
   }
@@ -323,6 +356,7 @@ class _HomePageState extends State<HomePage>
     bool result = await Navigator.push(
         context, MaterialPageRoute(builder: (context) => upgrateData(product)));
   }
+
   //  Future<void> showWeeklyAtDayAndTime(String asd,int id) async {
   //    var time = DateTime.now().add(Duration(seconds:10));
   //    var androidChannelSpecifics = AndroidNotificationDetails(
@@ -345,7 +379,7 @@ class _HomePageState extends State<HomePage>
   //    );
   //  }
   void showDialogWithFields(context) {
-    bool _notification = false;
+    bool _notification = notification![0].notification != 1 ? true : false;
     showDialog(
         context: context,
         builder: (context) {
@@ -374,7 +408,9 @@ class _HomePageState extends State<HomePage>
                                 value: _notification,
                                 onChanged: (newdeger) {
                                   setState(() {
-                                    _notification = !_notification;
+                                    _notification = newdeger;
+                                     _upgrateNotification(Settings.withId(1, newdeger != true ? 1 : 0));
+                                     getNotificationData();
                                   });
                                 })
                           ],

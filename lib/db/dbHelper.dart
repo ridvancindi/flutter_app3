@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter_app3/models/data.dart';
+import 'package:flutter_app3/models/settings.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -39,7 +40,9 @@ class DbHelper {
     await db.execute(
         "CREATE TABLE $tbldata ($colid INTEGER PRIMARY KEY AUTOINCREMENT, $colname text NULL, $colsurname text NULL,$colactive int NULL)");
      await db.execute(
-        "CREATE TABLE $tblsettings ($colnotification INTEGER DEFAULT 1)");
+        "CREATE TABLE $tblsettings ($colid INTEGER PRIMARY KEY AUTOINCREMENT,$colnotification INTEGER DEFAULT 1)");
+      await db.execute(
+        "INSERT INTO $tblsettings VALUES (1,1)");
   }
 
   Future<int> addData(Data data,String name) async {
@@ -61,15 +64,22 @@ class DbHelper {
     var sonuc = await db.rawQuery("SELECT * from data");
     return sonuc;
   }
-  Future<List<Map<String, dynamic>>> activeData() async {
+  Future<List<Map<String, dynamic>>> notificationData() async {
     var db = await _getDatabase();
-    var sonuc = await db.rawQuery("SELECT * from data WHERE $colactive == 1");
+    var sonuc = await db.rawQuery("SELECT * FROM settings");
     return sonuc;
   }
-  Future<List<Map<String, dynamic>>> notactiveData() async {
+  Future<int> notificationUpgrate(Settings data) async{
     var db = await _getDatabase();
-    var sonuc = await db.rawQuery("SELECT * from data WHERE $colactive == 0");
-    return sonuc;
+    var son = await db.rawQuery("SELECT * FROM $tbldata WHERE $colid != ${data.id}");
+     if (son.length>0) {
+       return 0;
+     } else if(son.length == 0){ 
+       var sonuc = await db.update(tblsettings, data.toMap(),where: "$colid = ?",whereArgs: [data.id]);
+     return sonuc;
+     }else {
+       return 0;
+     }
   }
   //Kullanıcı Güncelleme
   Future<int> dataUpgrate(Data data, String name) async{
@@ -83,8 +93,6 @@ class DbHelper {
      }else {
        return 0;
      }
-   
-    
   }
   Future<int> dataDelete(int id) async{
     var db = await _getDatabase();
