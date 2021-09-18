@@ -13,8 +13,8 @@ class upgrateData extends StatefulWidget {
 class _upgrateDataState extends State<upgrateData> {
   Data? data;
   _upgrateDataState(this.data);
-  var _name = TextEditingController();
-  var _surname = TextEditingController();
+  var _kelime = TextEditingController();
+  var _karsilik = TextEditingController();
   var _formKey = GlobalKey<FormState>();
   int? error;
   String? name;
@@ -31,8 +31,8 @@ class _upgrateDataState extends State<upgrateData> {
       }
       setState(() {});
     }).catchError((hata) => print("Hata $hata"));
-    _name.text = data!.name;
-    _surname.text = data!.surname;
+    _kelime.text = data!.kelime;
+    _karsilik.text = data!.karsilik;
   }
 
   @override
@@ -75,7 +75,7 @@ class _upgrateDataState extends State<upgrateData> {
                               ),
                             ),
                             child: TextFormField(
-                                controller: _name,
+                                controller: _kelime,
                                 keyboardType: TextInputType.name,
                                 style: TextStyle(fontSize: 15),
                                 autofocus: false,
@@ -95,7 +95,7 @@ class _upgrateDataState extends State<upgrateData> {
                                   disabledBorder: InputBorder.none,
                                   contentPadding:
                                       EdgeInsets.fromLTRB(10, 10, 10, 0),
-                                  labelText: "İsim",
+                                  labelText: "Kelime",
                                 )),
                           ),
                           SizedBox(
@@ -110,7 +110,7 @@ class _upgrateDataState extends State<upgrateData> {
                               ),
                             ),
                             child: TextFormField(
-                                controller: _surname,
+                                controller: _karsilik,
                                 keyboardType: TextInputType.name,
                                 style: TextStyle(fontSize: 15),
                                 autofocus: false,
@@ -130,7 +130,7 @@ class _upgrateDataState extends State<upgrateData> {
                                   disabledBorder: InputBorder.none,
                                   contentPadding:
                                       EdgeInsets.fromLTRB(10, 10, 10, 0),
-                                  labelText: "Soyisim",
+                                  labelText: "Karşılığı",
                                 )),
                           ),
                         ],
@@ -149,9 +149,9 @@ class _upgrateDataState extends State<upgrateData> {
                               setState(() {
                                 if (_formKey.currentState!.validate()) {
                                   _upgrateData(
-                                      Data.withId(data!.id, _name.text,
-                                          _surname.text, 1),
-                                      _name.text);
+                                      Data.withId(data!.id, _kelime.text,
+                                          _karsilik.text, 1,data!.createdDate,data!.upgrateDate),
+                                      _kelime.text);
                                 } else {}
                               });
                             }),

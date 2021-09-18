@@ -1,47 +1,59 @@
 class Data {
   int? _id;
-  String? _name;
-  String? _surname;
+  String? _kelime;
+  String? _karsilik;
   int? _isActive;
-      Data(
-      this._name,
-      this._surname,
-      this._isActive
-      );
-  Data.withId(
-      this._id,
-      this._name,
-      this._surname,
-      this._isActive,);
+  String? _createdDate;
+  String? _upgrateDate;
+  Data(this._kelime, this._karsilik, this._isActive, this._createdDate,
+      this._upgrateDate);
+  Data.withId(this._id, this._kelime, this._karsilik, this._isActive,
+      this._createdDate, this._upgrateDate);
   int get id => _id!;
-  String get name => _name!;
-  String get surname => _surname!;
+  String get kelime => _kelime!;
+  String get karsilik => _karsilik!;
   int get isActive => _isActive!;
-  set name(String value) {
-    _name = value;
+  String get createdDate => _createdDate!;
+  String get upgrateDate => _upgrateDate!;
+  set kelime(String value) {
+    _kelime = value;
   }
-  set surname(String value) {
-    _surname = value;
+
+  set karsilik(String value) {
+    _karsilik = value;
   }
+
   set isActive(int value) {
     _isActive = value;
   }
 
+  set createdDate(String value) {
+    createdDate = value;
+  }
+
+  set upgrateDate(String value) {
+    upgrateDate = value;
+  }
 
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
 
     map["id"] = _id;
-    map["name"] = _name;
-    map["surname"] = _surname;
-    map["isactive"] =   _isActive;
-    
+    map["kelime"] = _kelime;
+    map["karsilik"] = _karsilik;
+    map["isactive"] = _isActive;
+    map["createdDate"] = _createdDate;
+    map["upgrateDate"] = _upgrateDate;
+
     return map;
   }
-    Data.dbdenOkunanDeger(Map<String, dynamic> map){
-      this._id = map["id"];
-      this._name = map["name"];
-      this._surname = map["surname"];
-      this._isActive = map["isactive"];
+
+  Data.dbdenOkunanDeger(Map<String, dynamic> map) {
+    this._id = map["id"];
+    this._kelime = map["kelime"];
+    this._karsilik = map["karsilik"];
+    this._isActive = map["isactive"];
+    this._createdDate = map["createdDate"];
+    this._upgrateDate = map["upgrateDate"];
   }
 }

@@ -9,11 +9,13 @@ import 'package:sqflite/sqflite.dart';
 class DbHelper {
   String tbldata = "data";
   String colid = "id";
-  String colname = "name";
-  String colsurname = "surname";
+  String colkelime = "kelime";
+  String colkarsilik = "karsilik";
   String colactive = "isactive";
   String colnotification = "notification";
   String tblsettings = "settings";
+  String colcreatedDate = "createdDate";
+  String colupgrateDate = "upgrateDate";
   static final DbHelper _dbHelper = DbHelper._internal();
   DbHelper._internal();
   factory DbHelper() {
@@ -38,65 +40,72 @@ class DbHelper {
 
   void _createDb(Database db, int version) async {
     await db.execute(
-        "CREATE TABLE $tbldata ($colid INTEGER PRIMARY KEY AUTOINCREMENT, $colname text NULL, $colsurname text NULL,$colactive int NULL)");
-     await db.execute(
+        "CREATE TABLE $tbldata ($colid INTEGER PRIMARY KEY AUTOINCREMENT, $colkelime text NULL, $colkarsilik text NULL,$colactive int NULL, $colcreatedDate text NULL, $colupgrateDate text NULL)");
+    await db.execute(
         "CREATE TABLE $tblsettings ($colid INTEGER PRIMARY KEY AUTOINCREMENT,$colnotification INTEGER DEFAULT 1)");
-      await db.execute(
-        "INSERT INTO $tblsettings VALUES (1,1)");
+    await db.execute("INSERT INTO $tblsettings VALUES (1,1)");
   }
 
-  Future<int> addData(Data data,String name) async {
+  Future<int> addData(Data data, String kelime) async {
     var db = await _getDatabase();
-    var son = await db.rawQuery("SELECT * FROM $tbldata WHERE $colname = '$name'");
-     if (son.length > 0) {
-       return 0;
-     } else {
-       var sonuc = await db.insert(tbldata, data.toMap(),
-         nullColumnHack: "$colid");
-     print("eklendi " + sonuc.toString());
-     return sonuc;
-     }
-    
+    var son = await db
+        .rawQuery("SELECT * FROM $tbldata WHERE $colkelime = '$kelime'");
+    if (son.length > 0) {
+      return 0;
+    } else {
+      var sonuc =
+          await db.insert(tbldata, data.toMap(), nullColumnHack: "$colid");
+      print("eklendi " + sonuc.toString());
+      return sonuc;
+    }
   }
 
   Future<List<Map<String, dynamic>>> allData() async {
     var db = await _getDatabase();
-    var sonuc = await db.rawQuery("SELECT * from data");
+    var sonuc = await db.rawQuery("SELECT coalesce(upgrateDate,' ') upgrateDate, id ,kelime ,karsilik ,isactive ,createdDate from data");
     return sonuc;
   }
+
   Future<List<Map<String, dynamic>>> notificationData() async {
     var db = await _getDatabase();
     var sonuc = await db.rawQuery("SELECT * FROM settings");
     return sonuc;
   }
-  Future<int> notificationUpgrate(Settings data) async{
+
+  Future<int> notificationUpgrate(Settings data) async {
     var db = await _getDatabase();
-    var son = await db.rawQuery("SELECT * FROM $tbldata WHERE $colid != ${data.id}");
-     if (son.length>0) {
-       return 0;
-     } else if(son.length == 0){ 
-       var sonuc = await db.update(tblsettings, data.toMap(),where: "$colid = ?",whereArgs: [data.id]);
-     return sonuc;
-     }else {
-       return 0;
-     }
+    var son =
+        await db.rawQuery("SELECT * FROM $tbldata WHERE $colid != ${data.id}");
+    if (son.length > 0) {
+      return 0;
+    } else if (son.length == 0) {
+      var sonuc = await db.update(tblsettings, data.toMap(),
+          where: "$colid = ?", whereArgs: [data.id]);
+      return sonuc;
+    } else {
+      return 0;
+    }
   }
+
   //Kullanıcı Güncelleme
-  Future<int> dataUpgrate(Data data, String name) async{
+  Future<int> dataUpgrate(Data data, String kelime) async {
     var db = await _getDatabase();
-    var son = await db.rawQuery("SELECT * FROM $tbldata WHERE $colname = '$name' AND $colid != ${data.id}");
-     if (son.length>0) {
-       return 0;
-     } else if(son.length == 0){ 
-       var sonuc = await db.update(tbldata, data.toMap(),where: "$colid = ?",whereArgs: [data.id]);
-     return sonuc;
-     }else {
-       return 0;
-     }
+    var son = await db.rawQuery(
+        "SELECT * FROM $tbldata WHERE $colkelime = '$kelime' AND $colid != ${data.id}");
+    if (son.length > 0) {
+      return 0;
+    } else if (son.length == 0) {
+      var sonuc = await db.update(tbldata, data.toMap(),
+          where: "$colid = ?", whereArgs: [data.id]);
+      return sonuc;
+    } else {
+      return 0;
+    }
   }
-  Future<int> dataDelete(int id) async{
+
+  Future<int> dataDelete(int id) async {
     var db = await _getDatabase();
-    var sonuc =await db.delete(tbldata,where: "$colid =?",whereArgs: [id]);
+    var sonuc = await db.delete(tbldata, where: "$colid =?", whereArgs: [id]);
     return sonuc;
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app3/db/dbHelper.dart';
 import 'package:flutter_app3/models/data.dart';
+import 'package:intl/intl.dart';
+
 class addData extends StatefulWidget {
   addData({Key? key}) : super(key: key);
 
@@ -13,6 +15,8 @@ class _addDataState extends State<addData> {
   int? sehir = 1;
   int? error;
   int? num;
+  String? _createdDate;
+  String? _upgrateDate;
   var _name = TextEditingController();
   var _surname = TextEditingController();
   var _formKey = GlobalKey<FormState>();
@@ -33,6 +37,9 @@ class _addDataState extends State<addData> {
 
   @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+    _createdDate = DateFormat('dd-MM-yyyy').format(now);
+    _upgrateDate = DateFormat('dd-MM-yyyy').format(now);
     return WillPopScope(
       onWillPop: () {
         Navigator.pop(context, true);
@@ -58,12 +65,20 @@ class _addDataState extends State<addData> {
               child: Column(
                 children: [
                   Visibility(
-                      visible: error != 0 ? false : true, child: Container(alignment: Alignment.bottomLeft, child: Column(
-                        children: [
-                          Text("Bu İsim Bulunmakta.",style: TextStyle(color: Colors.red),),
-                          SizedBox(height: 10,)
-                        ],
-                      ))),
+                      visible: error != 0 ? false : true,
+                      child: Container(
+                          alignment: Alignment.bottomLeft,
+                          child: Column(
+                            children: [
+                              Text(
+                                "Bu İsim Bulunmakta.",
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              )
+                            ],
+                          ))),
                   Form(
                     key: _formKey,
                     child: Padding(
@@ -79,31 +94,32 @@ class _addDataState extends State<addData> {
                               ),
                             ),
                             child: TextFormField(
-                                          controller: _name,
-                                          keyboardType: TextInputType.name,
-                                          style: TextStyle(fontSize: 15),
-                                          autofocus: false,
-                                          validator: (kontroledilecekname) {
-                                            if (kontroledilecekname!.isEmpty) {
-                                              return "Burası Boş Olamaz";
-                                            } else if (kontroledilecekname.length <
-                                                2) {
-                                              return "3 Karakterden Küçük Olamaz...";
-                                            } else
-                                              return null;
-                                          },
-                                          decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                            focusedBorder: InputBorder.none,
-                                            enabledBorder: InputBorder.none,
-                                            errorBorder: InputBorder.none,
-                                            disabledBorder: InputBorder.none,
-                                            contentPadding:
-                                                EdgeInsets.fromLTRB(10, 10, 10, 0),
-                                            labelText: "İsim",
-                                          )),
+                                controller: _name,
+                                keyboardType: TextInputType.name,
+                                style: TextStyle(fontSize: 15),
+                                autofocus: false,
+                                validator: (kontroledilecekname) {
+                                  if (kontroledilecekname!.isEmpty) {
+                                    return "Burası Boş Olamaz";
+                                  } else if (kontroledilecekname.length < 2) {
+                                    return "3 Karakterden Küçük Olamaz...";
+                                  } else
+                                    return null;
+                                },
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  errorBorder: InputBorder.none,
+                                  disabledBorder: InputBorder.none,
+                                  contentPadding:
+                                      EdgeInsets.fromLTRB(10, 10, 10, 0),
+                                  labelText: "Kelime",
+                                )),
                           ),
-                          SizedBox(height: 15,),
+                          SizedBox(
+                            height: 15,
+                          ),
                           Container(
                             decoration: ShapeDecoration(
                               color: Colors.grey.shade200,
@@ -113,29 +129,28 @@ class _addDataState extends State<addData> {
                               ),
                             ),
                             child: TextFormField(
-                                          controller: _surname,
-                                          keyboardType: TextInputType.name,
-                                          style: TextStyle(fontSize: 15),
-                                          autofocus: false,
-                                          validator: (kontroledilecekname) {
-                                            if (kontroledilecekname!.isEmpty) {
-                                              return "Burası Boş Olamaz";
-                                            } else if (kontroledilecekname.length <
-                                                2) {
-                                              return "3 Karakterden Küçük Olamaz...";
-                                            } else
-                                              return null;
-                                          },
-                                          decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                            focusedBorder: InputBorder.none,
-                                            enabledBorder: InputBorder.none,
-                                            errorBorder: InputBorder.none,
-                                            disabledBorder: InputBorder.none,
-                                            contentPadding:
-                                                EdgeInsets.fromLTRB(10, 10, 10, 0),
-                                            labelText: "Soyisim",
-                                          )),
+                                controller: _surname,
+                                keyboardType: TextInputType.name,
+                                style: TextStyle(fontSize: 15),
+                                autofocus: false,
+                                validator: (kontroledilecekname) {
+                                  if (kontroledilecekname!.isEmpty) {
+                                    return "Burası Boş Olamaz";
+                                  } else if (kontroledilecekname.length < 2) {
+                                    return "3 Karakterden Küçük Olamaz...";
+                                  } else
+                                    return null;
+                                },
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  errorBorder: InputBorder.none,
+                                  disabledBorder: InputBorder.none,
+                                  contentPadding:
+                                      EdgeInsets.fromLTRB(10, 10, 10, 0),
+                                  labelText: "Karşılığı",
+                                )),
                           ),
                         ],
                       ),
@@ -156,7 +171,10 @@ class _addDataState extends State<addData> {
                           onPressed: () {
                             setState(() {
                               if (_formKey.currentState!.validate()) {
-                                addData(Data(_name.text,_surname.text, 1), _name.text);
+                                addData(
+                                    Data(_name.text, _surname.text, 1, _createdDate,
+                                        null),
+                                    _name.text);
                               } else {}
                             });
                           }),

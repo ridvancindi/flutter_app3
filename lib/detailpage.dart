@@ -20,7 +20,6 @@ class _DetailPageState extends State<DetailPage> {
   int count = 0;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -34,7 +33,7 @@ class _DetailPageState extends State<DetailPage> {
       child: Scaffold(
           key: _key,
           appBar: AppBar(
-            title: Text("Data Detay Sayfası ${data!.name}"),
+            title: Text("Data Detay Sayfası ${data!.kelime}"),
             automaticallyImplyLeading: false,
             leading: IconButton(
                 onPressed: () {
@@ -65,7 +64,7 @@ class _DetailPageState extends State<DetailPage> {
                       height: 10,
                     ),
                     Text(
-                      data!.name,
+                      data!.kelime,
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 25, color: Colors.white),
                     ),
@@ -174,14 +173,14 @@ class _DetailPageState extends State<DetailPage> {
                                       Container(
                                           alignment: Alignment.bottomLeft,
                                           child: Text(
-                                            "Ad",
+                                            "Kelime",
                                             style: TextStyle(fontSize: 16),
                                           )),
                                       Container(
                                           alignment: Alignment.bottomRight,
                                           child: Row(
                                             children: [
-                                              Text(data!.name,
+                                              Text(data!.kelime,
                                                   style:
                                                       TextStyle(fontSize: 15)),
                                               SizedBox(
@@ -208,14 +207,14 @@ class _DetailPageState extends State<DetailPage> {
                                       Container(
                                           alignment: Alignment.bottomLeft,
                                           child: Text(
-                                            "Soyad",
+                                            "Karşılığı",
                                             style: TextStyle(fontSize: 16),
                                           )),
                                       Container(
                                           alignment: Alignment.bottomRight,
                                           child: Row(
                                             children: [
-                                              Text(data!.surname,
+                                              Text(data!.karsilik,
                                                   style:
                                                       TextStyle(fontSize: 15)),
                                               SizedBox(
@@ -245,10 +244,9 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   void delete() async {
-    int result;
     back = true;
     Navigator.pop(context, back);
-    result = await _dbHelper!.dataDelete(data!.id);
+    await _dbHelper!.dataDelete(data!.id);
   }
 }
 /*

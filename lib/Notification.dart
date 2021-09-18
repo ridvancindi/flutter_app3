@@ -6,11 +6,11 @@ import 'package:rxdart/subjects.dart';
 class LocalNotifyManager {
   FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
   var initSetting;
-  
+
   BehaviorSubject<ReceiveNotification> get didReceiveLocalNotificationSubject =>
       BehaviorSubject<ReceiveNotification>();
 
-  LocalNotifyManager.init(){
+  LocalNotifyManager.init() {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     if (Platform.isIOS) {
       requestIOSPermission();
@@ -25,13 +25,14 @@ class LocalNotifyManager {
   }
 
   initializePlatform() {
-    var initSettingAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initSettingAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
     var initSettingIos = IOSInitializationSettings(
         requestAlertPermission: true,
         requestBadgePermission: false,
         onDidReceiveLocalNotification: (id, title, body, payload) async {
-          ReceiveNotification notification = ReceiveNotification(
-              id: id, title: title, body: body);
+          ReceiveNotification notification =
+              ReceiveNotification(id: id, title: title, body: body);
           didReceiveLocalNotificationSubject.add(notification);
         });
     var initSetting = InitializationSettings(
@@ -51,8 +52,8 @@ class LocalNotifyManager {
     });
   }
 
-  Future<void> showNightNotification(String title, String subtitle, int id) async {
-    var time = Time(21,00,00);
+  Future<void> showNightNotification() async {
+    var time = Time(21, 00, 00);
     var androidChannel = AndroidNotificationDetails(
       'CHANNEL_ID',
       'CHANNEL_NAME',
@@ -65,11 +66,12 @@ class LocalNotifyManager {
     var iosChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics =
         NotificationDetails(android: androidChannel, iOS: iosChannelSpecifics);
-    await flutterLocalNotificationsPlugin!.showDailyAtTime(
-        id, title, subtitle, time,platformChannelSpecifics);
+    await flutterLocalNotificationsPlugin!.showDailyAtTime(0, "Kelimeci",
+        "Bugün Kelimelerine Çalıştınmı ?", time, platformChannelSpecifics);
   }
-  Future<void> showDayTimeNotification(String title, String subtitle, int id) async {
-    var time = Time(09,00,00);
+
+  Future<void> showDayTimeNotification() async {
+    var time = Time(09, 00, 00);
     var androidChannel = AndroidNotificationDetails(
       'CHANNEL_ID',
       'CHANNEL_NAME',
@@ -82,10 +84,9 @@ class LocalNotifyManager {
     var iosChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics =
         NotificationDetails(android: androidChannel, iOS: iosChannelSpecifics);
-    await flutterLocalNotificationsPlugin!.showDailyAtTime(
-        id, title, subtitle, time,platformChannelSpecifics);
+    await flutterLocalNotificationsPlugin!.showDailyAtTime(2, "Kelimeci",
+        "Bugün Kelimelerine Çalıştınmı ?", time, platformChannelSpecifics);
   }
-  
 }
 
 LocalNotifyManager localNotifyManager = LocalNotifyManager.init();
@@ -96,7 +97,5 @@ class ReceiveNotification {
   final String? body;
 
   ReceiveNotification(
-      {@required this.id,
-      @required this.title,
-      @required this.body});
+      {@required this.id, @required this.title, @required this.body});
 }

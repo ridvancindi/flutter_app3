@@ -2,9 +2,9 @@ import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app3/Notification.dart';
 import 'package:flutter_app3/addData.dart';
-import 'package:flutter_app3/detailpage.dart';
 import 'package:flutter_app3/models/settings.dart';
 import 'package:flutter_app3/upgrateData.dart';
+import 'package:intl/intl.dart';
 import 'db/dbHelper.dart';
 import 'models/data.dart';
 
@@ -18,7 +18,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   List<Data>? data;
+  String? _createdDate;
+  String? _upgrateDate;
   TabController? tabController;
+  int pasif = 0;
+  int addDaily = 0;
+  int upgrateDaily = 0;
   List<Settings>? notification;
   final GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey<ScaffoldState>();
   DbHelper? _databaseHelper;
@@ -43,24 +48,14 @@ class _HomePageState extends State<HomePage>
   // }
   @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+    _createdDate = DateFormat('dd-MM-yyyy').format(now);
+    _upgrateDate = DateFormat('dd-MM-yyyy').format(now);
     getNotificationData();
     getData();
     if (data == null) {
       data = <Data>[];
       notification = <Settings>[];
-    }
-    if (data!.length > 0 && notification![0].notification == 1) {
-      for (var i = 0; i < data!.length; i++) {
-        if (data![i].isActive == 1) {
-          //showWeeklyAtDayAndTime(data![i].name,data![i].id);
-          localNotifyManager.showNightNotification(
-              data![i].name, data![i].surname, data![i].id);
-           localNotifyManager.showDayTimeNotification(
-               data![i].name, data![i].surname, data![i].id);
-        }
-        //localNotifyManager.showNotification(active![i].name , active![i].id);
-        //
-      }
     }
     return Scaffold(
       key: _scaffoldkey,
@@ -69,7 +64,7 @@ class _HomePageState extends State<HomePage>
           Container(
               margin: EdgeInsets.only(right: 15),
               child: IconButton(
-                onPressed: () {
+                onPressed: () async {
                   showDialogWithFields(context);
                 },
                 icon: Icon(Icons.settings),
@@ -80,189 +75,483 @@ class _HomePageState extends State<HomePage>
           "AnaSayfa",
           style: TextStyle(color: Colors.white),
         ),
-        bottom: TabBar(
-            controller: tabController,
-            labelColor: Colors.white,
-            labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
-            tabs: [
-              Tab(
-                text: "Aktiler",
-              ),
-              Tab(
-                text: "Pasifler",
-              ),
-            ]),
       ),
-      body: TabBarView(controller: tabController, children: [
-        Container(
-          child: Column(children: [
-            Expanded(
-              child: ListView.builder(
-                  itemCount: data!.length,
-                  itemBuilder: (context, index) {
-                    int deneme = data![index].isActive;
-                    if (data![index].isActive == 1) {
-                      return FlipCard(
-                        direction: FlipDirection.HORIZONTAL,
-                        front: Card(
-                          child: ListTile(
-                            title: Text(data![index].name,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w400)),
-                            trailing: Text(data![index].surname),
-                            leading: Checkbox(
-                              checkColor: Colors.white,
-                              value: deneme == 0 ? false : true,
-                              onChanged: (bool? value) async {
-                                setState(() {
-                                  deneme = value == true ? 0 : 1;
-                                  _upgrateData(
-                                      Data.withId(
-                                          data![index].id,
-                                          data![index].name,
-                                          data![index].surname,
-                                          value == true ? 1 : 0),
-                                      data![index].name);
-                                  data!.clear();
-                                });
-                              },
+      body: Container(
+          child: Column(
+        children: [
+          SizedBox(
+            height: 15,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Card(
+                    child: Container(
+                      margin: EdgeInsets.only(left: 15),
+                      height: 75,
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            child: Text(
+                              "T",
+                              style: TextStyle(fontSize: 19),
                             ),
+                            backgroundColor: Colors.green,
                           ),
-                        ),
-                        back: Card(
-                            margin: EdgeInsets.only(top: 15),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 10, bottom: 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          primary: Colors.purple),
-                                      onPressed: () async {
-                                        setState(() {});
-                                        bool result = await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  upgrateData(data![index])),
-                                        );
-                                        if (result) {}
-                                      },
-                                      child: Text(
-                                        "Düzenle",
-                                        style: TextStyle(color: Colors.white),
-                                      )),
-                                  SizedBox(
-                                    width: 15,
-                                  ),
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          primary: Colors.red),
-                                      onPressed: () {
-                                        delete(data![index].id, index);
-                                      },
-                                      child: Text("Sil",
-                                          style:
-                                              TextStyle(color: Colors.white)))
-                                ],
+                          SizedBox(width: 10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 20,
                               ),
-                            )),
-                      );
-                    }
-                    return Container();
-                  }),
-            ),
-          ]),
-        ),
-        Container(
-          child: Column(children: [
-            Expanded(
-              child: ListView.builder(
-                  itemCount: data!.length,
-                  itemBuilder: (context, index) {
-                    int deneme = data![index].isActive;
-                    if (data![index].isActive == 0) {
-                      return FlipCard(
-                        direction: FlipDirection.HORIZONTAL,
-                        front: Card(
-                          child: ListTile(
-                            title: Text(data![index].name,
+                              Text(
+                                "Kelimeler",
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w400)),
-                            trailing: Text(data![index].surname),
-                            leading: Checkbox(
-                              checkColor: Colors.white,
-                              value: deneme == 0 ? false : true,
-                              onChanged: (bool? value) async {
-                                setState(() {
-                                  deneme = value == true ? 0 : 1;
-                                  _upgrateData(
-                                      Data.withId(
-                                          data![index].id,
-                                          data![index].name,
-                                          data![index].surname,
-                                          value == true ? 1 : 0),
-                                      data![index].name);
-                                  data!.clear();
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                        back: Card(
-                            margin: EdgeInsets.only(top: 15),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 10, bottom: 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          primary: Colors.purple),
-                                      onPressed: () async {
-                                        setState(() {});
-                                        bool result = await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  upgrateData(data![index])),
-                                        );
-                                        if (result) {}
-                                      },
-                                      child: Text(
-                                        "Düzenle",
-                                        style: TextStyle(color: Colors.white),
-                                      )),
-                                  SizedBox(
-                                    width: 15,
-                                  ),
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          primary: Colors.red),
-                                      onPressed: () {
-                                        delete(data![index].id, index);
-                                      },
-                                      child: Text("Sil",
-                                          style:
-                                              TextStyle(color: Colors.white)))
-                                ],
+                                    fontSize: 15,
+                                    color: Colors.black54,
+                                    fontWeight: FontWeight.w500),
                               ),
-                            )),
-                      );
-                    }
-                    return Container();
-                  }),
-            ),
-          ]),
-        ),
-      ]),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                data!.length.toString(),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Card(
+                    child: Container(
+                      margin: EdgeInsets.only(left: 15),
+                      height: 75,
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            child: Text(
+                              "E",
+                              style: TextStyle(fontSize: 19),
+                            ),
+                            backgroundColor: Colors.red,
+                          ),
+                          SizedBox(width: 10),
+                          Column(
+                            children: [
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                "Ezberlenenler",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.black54,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                pasif.toString(),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 10),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Card(
+                    child: Container(
+                      margin: EdgeInsets.only(left: 15),
+                      height: 75,
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            child: Text(
+                              "B",
+                              style: TextStyle(fontSize: 19),
+                            ),
+                            backgroundColor: Colors.blue,
+                          ),
+                          SizedBox(width: 10),
+                          Column(
+                            children: [
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                "Bugün Ezberlenen",
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.black54,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                upgrateDaily.toString(),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Card(
+                    child: Container(
+                      margin: EdgeInsets.only(left: 15),
+                      height: 75,
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            child: Text(
+                              "D",
+                              style: TextStyle(fontSize: 19),
+                            ),
+                            backgroundColor: Colors.yellow,
+                          ),
+                          SizedBox(width: 10),
+                          Column(
+                            children: [
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                "Bugün Eklenen",
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.black54,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                addDaily.toString(),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          DefaultTabController(
+              length: 2, // length of tabs
+              initialIndex: 0,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Container(
+                      child: TabBar(
+                          controller: tabController,
+                          labelColor: Colors.black,
+                          labelStyle: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w800),
+                          tabs: [
+                            Tab(
+                              text: "Aktiler",
+                            ),
+                            Tab(
+                              text: "Pasifler",
+                            ),
+                          ]),
+                    ),
+                    Container(
+                      height: 400,
+                      child: TabBarView(controller: tabController, children: [
+                        Container(
+                          child: Column(children: [
+                            Expanded(
+                              child: ListView.builder(
+                                  itemCount: data!.length,
+                                  itemBuilder: (context, index) {
+                                    int deneme = data![index].isActive;
+                                    if (data![index].isActive == 1) {
+                                      return FlipCard(
+                                        direction: FlipDirection.HORIZONTAL,
+                                        front: Card(
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                child: ListTile(
+                                                  title: Text(
+                                                      data![index].kelime,
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 17,
+                                                          fontWeight:
+                                                              FontWeight.w400)),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: ListTile(
+                                                  title: Text(
+                                                      data![index].karsilik,
+                                                      style: TextStyle(
+                                                          color: Colors.green,
+                                                          fontSize: 17,
+                                                          fontWeight:
+                                                              FontWeight.w600)),
+                                                  trailing: Checkbox(
+                                                    checkColor: Colors.white,
+                                                    value: deneme != 0
+                                                        ? false
+                                                        : true,
+                                                    onChanged:
+                                                        (bool? value) async {
+                                                      setState(() {
+                                                        deneme = value != true
+                                                            ? 0
+                                                            : 1;
+                                                        _upgrateData(
+                                                            Data.withId(
+                                                                data![index].id,
+                                                                data![index]
+                                                                    .kelime,
+                                                                data![index]
+                                                                    .karsilik,
+                                                                value != true
+                                                                    ? 1
+                                                                    : 0,
+                                                                data![index]
+                                                                    .createdDate,
+                                                                _upgrateDate),
+                                                            data![index]
+                                                                .kelime);
+                                                        data!.clear();
+                                                      });
+                                                    },
+                                                  ),
+                                                  minVerticalPadding: 25,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        back: Card(
+                                            margin: EdgeInsets.only(top: 15),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 10, bottom: 10),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                              primary: Colors
+                                                                  .purple),
+                                                      onPressed: () async {
+                                                        setState(() {});
+                                                        bool result =
+                                                            await Navigator
+                                                                .push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  upgrateData(
+                                                                      data![
+                                                                          index])),
+                                                        );
+                                                        if (result) {}
+                                                      },
+                                                      child: Text(
+                                                        "Düzenle",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      )),
+                                                  SizedBox(
+                                                    width: 15,
+                                                  ),
+                                                  ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                              primary:
+                                                                  Colors.red),
+                                                      onPressed: () {
+                                                        delete(data![index].id,
+                                                            index);
+                                                      },
+                                                      child: Text("Sil",
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .white)))
+                                                ],
+                                              ),
+                                            )),
+                                      );
+                                    }
+                                    return Container();
+                                  }),
+                            ),
+                          ]),
+                        ),
+                        Container(
+                          child: Column(children: [
+                            Expanded(
+                              child: ListView.builder(
+                                  itemCount: data!.length,
+                                  itemBuilder: (context, index) {
+                                    int deneme = data![index].isActive;
+                                    if (data![index].isActive == 0) {
+                                      return FlipCard(
+                                        direction: FlipDirection.HORIZONTAL,
+                                        front: Card(
+                                          child: ListTile(
+                                            title: Text(data![index].kelime,
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 17,
+                                                    fontWeight:
+                                                        FontWeight.w400)),
+                                            trailing:
+                                                Text(data![index].karsilik),
+                                            leading: Checkbox(
+                                              checkColor: Colors.white,
+                                              value: deneme != 0 ? false : true,
+                                              onChanged: (bool? value) async {
+                                                setState(() {
+                                                  deneme =
+                                                      value != true ? 0 : 1;
+                                                  _upgrateData(
+                                                      Data.withId(
+                                                          data![index].id,
+                                                          data![index].kelime,
+                                                          data![index].karsilik,
+                                                          value != true ? 1 : 0,
+                                                          data![index]
+                                                              .createdDate,
+                                                          null),
+                                                      data![index].kelime);
+                                                  data!.clear();
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                        back: Card(
+                                            margin: EdgeInsets.only(top: 15),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 10, bottom: 10),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                              primary: Colors
+                                                                  .purple),
+                                                      onPressed: () async {
+                                                        setState(() {});
+                                                        bool result =
+                                                            await Navigator
+                                                                .push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  upgrateData(
+                                                                      data![
+                                                                          index])),
+                                                        );
+                                                        if (result) {}
+                                                      },
+                                                      child: Text(
+                                                        "Düzenle",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      )),
+                                                  SizedBox(
+                                                    width: 15,
+                                                  ),
+                                                  ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                              primary:
+                                                                  Colors.red),
+                                                      onPressed: () {
+                                                        delete(data![index].id,
+                                                            index);
+                                                      },
+                                                      child: Text("Sil",
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .white)))
+                                                ],
+                                              ),
+                                            )),
+                                      );
+                                    }
+                                    return Container();
+                                  }),
+                            ),
+                          ]),
+                        ),
+                      ]),
+                    )
+                  ])),
+        ],
+      )),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           setState(() {});
@@ -283,6 +572,9 @@ class _HomePageState extends State<HomePage>
   }
 
   void getData() {
+    int _pasif = 0;
+    int _addDaily = 0;
+    int _upgrateDaily = 0;
     var dbFuture = _databaseHelper!.initializeDatabase();
     dbFuture.then((value) {
       var proFuture = _databaseHelper!.allData();
@@ -292,7 +584,21 @@ class _HomePageState extends State<HomePage>
         for (var i = 0; i < count; i++) {
           productsData.add(Data.dbdenOkunanDeger(value[i]));
         }
+        for (var i = 0; i < productsData.length; i++) {
+          if (productsData[i].isActive == 0) {
+            _pasif++;
+          }
+          if (productsData[i].createdDate == _createdDate) {
+            _addDaily++;
+          }
+          if (productsData[i].upgrateDate == _upgrateDate) {
+            _upgrateDaily++;
+          }
+        }
         setState(() {
+          pasif = _pasif;
+          addDaily = _addDaily;
+          upgrateDaily = _upgrateDaily;
           data = productsData;
           count = count;
         });
@@ -317,26 +623,27 @@ class _HomePageState extends State<HomePage>
       });
     });
   }
+
   void _upgrateNotification(Settings data) async {
     var sonuc = await _databaseHelper!.notificationUpgrate(data);
     if (sonuc != 0) {
-       print("Başarılı");
+      print("Başarılı");
     } else {
       print("Hata Var");
     }
   }
 
   Future _upgrateData(Data data, String name) async {
-    var sonuc = await _databaseHelper!.dataUpgrate(data, name);
+    await _databaseHelper!.dataUpgrate(data, name);
   }
 
-  void goDetail(Data data, int index) async {
-    bool result = await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => DetailPage(data)));
-    if (result) {
-      getData();
-    }
-  }
+  // void goDetail(Data data, int index) async {
+  //   bool result = await Navigator.push(
+  //       context, MaterialPageRoute(builder: (context) => DetailPage(data)));
+  //   if (result) {
+  //     getData();
+  //   }
+  // }
 
   void delete(int id, int id2) async {
     int result;
@@ -352,32 +659,10 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  void upgrate(Data product) async {
-    bool result = await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => upgrateData(product)));
-  }
-
-  //  Future<void> showWeeklyAtDayAndTime(String asd,int id) async {
-  //    var time = DateTime.now().add(Duration(seconds:10));
-  //    var androidChannelSpecifics = AndroidNotificationDetails(
-  //      'CHANNEL_ID_TIME',
-  //      'CHANNEL_NAME_TIME',
-  //      "CHANNEL_DESCRIPTION_TIME",
-  //      importance: Importance.max,
-  //      priority: Priority.high,
-  //    );
-  //    var iosChannelSpecifics = IOSNotificationDetails();
-  //    var platformChannelSpecifics =
-  //        NotificationDetails(android: androidChannelSpecifics, iOS: iosChannelSpecifics);
-  //    await flutterLocalNotificationsPlugin.schedule(
-  //      id,
-  //      asd,
-  //      'Test Bildirim Açıklama',
-  //      time,
-  //      platformChannelSpecifics,
-  //      payload: "sa"
-  //    );
-  //  }
+  // void upgrate(Data product) async {
+  //   await Navigator.push(
+  //       context, MaterialPageRoute(builder: (context) => upgrateData(product)));
+  // }
   void showDialogWithFields(context) {
     bool _notification = notification![0].notification != 1 ? true : false;
     showDialog(
@@ -409,8 +694,9 @@ class _HomePageState extends State<HomePage>
                                 onChanged: (newdeger) {
                                   setState(() {
                                     _notification = newdeger;
-                                     _upgrateNotification(Settings.withId(1, newdeger != true ? 1 : 0));
-                                     getNotificationData();
+                                    _upgrateNotification(Settings.withId(
+                                        1, newdeger != true ? 1 : 0));
+                                    getNotificationData();
                                   });
                                 })
                           ],
