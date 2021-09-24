@@ -76,7 +76,8 @@ class _HomePageState extends State<HomePage>
           style: TextStyle(color: Colors.white),
         ),
       ),
-      body: Container(
+      body:SingleChildScrollView(
+                      child: Container(
           child: Column(
         children: [
           SizedBox(
@@ -90,29 +91,22 @@ class _HomePageState extends State<HomePage>
                   child: Card(
                     child: Container(
                       margin: EdgeInsets.only(left: 15),
-                      height: 75,
+                      height: 60,
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CircleAvatar(
-                            child: Text(
-                              "T",
-                              style: TextStyle(fontSize: 19),
-                            ),
-                            backgroundColor: Colors.green,
-                          ),
-                          SizedBox(width: 10),
                           Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(
-                                height: 20,
+                                height: 10,
                               ),
                               Text(
                                 "Kelimeler",
-                                textAlign: TextAlign.center,
+                                textAlign: TextAlign.start,
                                 style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.black54,
+                                    fontSize: 13,
+                                    color: Colors.black45,
                                     fontWeight: FontWeight.w500),
                               ),
                               SizedBox(
@@ -120,13 +114,23 @@ class _HomePageState extends State<HomePage>
                               ),
                               Text(
                                 data!.length.toString(),
-                                textAlign: TextAlign.center,
+                                textAlign: TextAlign.start,
                                 style: TextStyle(
                                     fontSize: 15,
                                     color: Colors.black,
-                                    fontWeight: FontWeight.w600),
+                                    fontWeight: FontWeight.w700),
                               )
                             ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              alignment: Alignment.centerRight,
+                              child: CircleAvatar(
+                                radius: 10,
+                                backgroundColor: Colors.green,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -140,28 +144,22 @@ class _HomePageState extends State<HomePage>
                   child: Card(
                     child: Container(
                       margin: EdgeInsets.only(left: 15),
-                      height: 75,
+                      height: 60,
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CircleAvatar(
-                            child: Text(
-                              "E",
-                              style: TextStyle(fontSize: 19),
-                            ),
-                            backgroundColor: Colors.red,
-                          ),
-                          SizedBox(width: 10),
                           Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(
-                                height: 20,
+                                height: 10,
                               ),
                               Text(
-                                "Ezberlenenler",
-                                textAlign: TextAlign.center,
+                                "Ezberlenen",
+                                textAlign: TextAlign.start,
                                 style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.black54,
+                                    fontSize: 13,
+                                    color: Colors.black45,
                                     fontWeight: FontWeight.w500),
                               ),
                               SizedBox(
@@ -169,13 +167,23 @@ class _HomePageState extends State<HomePage>
                               ),
                               Text(
                                 pasif.toString(),
-                                textAlign: TextAlign.center,
+                                textAlign: TextAlign.start,
                                 style: TextStyle(
                                     fontSize: 15,
                                     color: Colors.black,
-                                    fontWeight: FontWeight.w600),
+                                    fontWeight: FontWeight.w700),
                               )
                             ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              alignment: Alignment.centerRight,
+                              child: CircleAvatar(
+                                radius: 10,
+                                backgroundColor: Colors.red,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -194,28 +202,22 @@ class _HomePageState extends State<HomePage>
                   child: Card(
                     child: Container(
                       margin: EdgeInsets.only(left: 15),
-                      height: 75,
+                      height: 60,
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CircleAvatar(
-                            child: Text(
-                              "B",
-                              style: TextStyle(fontSize: 19),
-                            ),
-                            backgroundColor: Colors.blue,
-                          ),
-                          SizedBox(width: 10),
                           Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(
-                                height: 20,
+                                height: 10,
                               ),
                               Text(
                                 "Bugün Ezberlenen",
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.black54,
+                                    fontSize: 13,
+                                    color: Colors.black45,
                                     fontWeight: FontWeight.w500),
                               ),
                               SizedBox(
@@ -223,13 +225,23 @@ class _HomePageState extends State<HomePage>
                               ),
                               Text(
                                 upgrateDaily.toString(),
-                                textAlign: TextAlign.center,
+                                textAlign: TextAlign.start,
                                 style: TextStyle(
                                     fontSize: 15,
                                     color: Colors.black,
-                                    fontWeight: FontWeight.w600),
+                                    fontWeight: FontWeight.w700),
                               )
                             ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              alignment: Alignment.centerRight,
+                              child: CircleAvatar(
+                                radius: 10,
+                                backgroundColor: Colors.blue,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -243,28 +255,22 @@ class _HomePageState extends State<HomePage>
                   child: Card(
                     child: Container(
                       margin: EdgeInsets.only(left: 15),
-                      height: 75,
+                      height: 60,
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CircleAvatar(
-                            child: Text(
-                              "D",
-                              style: TextStyle(fontSize: 19),
-                            ),
-                            backgroundColor: Colors.yellow,
-                          ),
-                          SizedBox(width: 10),
                           Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(
-                                height: 20,
+                                height: 10,
                               ),
                               Text(
                                 "Bugün Eklenen",
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.black54,
+                                    fontSize: 13,
+                                    color: Colors.black45,
                                     fontWeight: FontWeight.w500),
                               ),
                               SizedBox(
@@ -272,13 +278,23 @@ class _HomePageState extends State<HomePage>
                               ),
                               Text(
                                 addDaily.toString(),
-                                textAlign: TextAlign.center,
+                                textAlign: TextAlign.start,
                                 style: TextStyle(
                                     fontSize: 15,
                                     color: Colors.black,
-                                    fontWeight: FontWeight.w600),
+                                    fontWeight: FontWeight.w700),
                               )
                             ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              alignment: Alignment.centerRight,
+                              child: CircleAvatar(
+                                radius: 10,
+                                backgroundColor: Colors.yellow,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -312,246 +328,275 @@ class _HomePageState extends State<HomePage>
                             ),
                           ]),
                     ),
-                    Container(
-                      height: 400,
-                      child: TabBarView(controller: tabController, children: [
-                        Container(
-                          child: Column(children: [
-                            Expanded(
-                              child: ListView.builder(
-                                  itemCount: data!.length,
-                                  itemBuilder: (context, index) {
-                                    int deneme = data![index].isActive;
-                                    if (data![index].isActive == 1) {
-                                      return FlipCard(
-                                        direction: FlipDirection.HORIZONTAL,
-                                        front: Card(
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: ListTile(
-                                                  title: Text(
-                                                      data![index].kelime,
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 17,
-                                                          fontWeight:
-                                                              FontWeight.w400)),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: ListTile(
-                                                  title: Text(
-                                                      data![index].karsilik,
-                                                      style: TextStyle(
-                                                          color: Colors.green,
-                                                          fontSize: 17,
-                                                          fontWeight:
-                                                              FontWeight.w600)),
-                                                  trailing: Checkbox(
-                                                    checkColor: Colors.white,
-                                                    value: deneme != 0
-                                                        ? false
-                                                        : true,
-                                                    onChanged:
-                                                        (bool? value) async {
-                                                      setState(() {
-                                                        deneme = value != true
-                                                            ? 0
-                                                            : 1;
-                                                        _upgrateData(
-                                                            Data.withId(
-                                                                data![index].id,
-                                                                data![index]
-                                                                    .kelime,
-                                                                data![index]
-                                                                    .karsilik,
-                                                                value != true
-                                                                    ? 1
-                                                                    : 0,
-                                                                data![index]
-                                                                    .createdDate,
-                                                                _upgrateDate),
-                                                            data![index]
-                                                                .kelime);
-                                                        data!.clear();
-                                                      });
-                                                    },
-                                                  ),
-                                                  minVerticalPadding: 25,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        back: Card(
-                                            margin: EdgeInsets.only(top: 15),
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10, bottom: 10),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  ElevatedButton(
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                              primary: Colors
-                                                                  .purple),
-                                                      onPressed: () async {
-                                                        setState(() {});
-                                                        bool result =
-                                                            await Navigator
-                                                                .push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  upgrateData(
-                                                                      data![
-                                                                          index])),
-                                                        );
-                                                        if (result) {}
-                                                      },
-                                                      child: Text(
-                                                        "Düzenle",
+                     Container(
+                       height: 570,
+                        child: TabBarView(controller: tabController, children: [
+                          Container(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                              Expanded(
+                                child: ListView.builder(
+                                    itemCount: data!.length,
+                                    itemBuilder: (context, index) {
+                                      int deneme = data![index].isActive;
+                                      if (data![index].isActive == 1) {
+                                        return FlipCard(
+                                          direction: FlipDirection.HORIZONTAL,
+                                          front: Card(
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: ListTile(
+                                                    title: Text(
+                                                        data![index].kelime,
                                                         style: TextStyle(
-                                                            color:
-                                                                Colors.white),
-                                                      )),
-                                                  SizedBox(
-                                                    width: 15,
+                                                            color: Colors.black,
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight.w400)),
                                                   ),
-                                                  ElevatedButton(
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                              primary:
-                                                                  Colors.red),
-                                                      onPressed: () {
-                                                        delete(data![index].id,
-                                                            index);
+                                                ),
+                                                Expanded(
+                                                  child: ListTile(
+                                                    title: Text(
+                                                        data![index].karsilik,
+                                                        style: TextStyle(
+                                                            color: Colors.deepOrange,
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight.w600)),
+                                                    trailing: Checkbox(
+                                                      checkColor: Colors.white,
+                                                      value: deneme != 0
+                                                          ? false
+                                                          : true,
+                                                      onChanged:
+                                                          (bool? value) async {
+                                                        setState(() {
+                                                          deneme = value != true
+                                                              ? 0
+                                                              : 1;
+                                                          _upgrateData(
+                                                              Data.withId(
+                                                                  data![index].id,
+                                                                  data![index]
+                                                                      .kelime,
+                                                                  data![index]
+                                                                      .karsilik,
+                                                                  value != true
+                                                                      ? 1
+                                                                      : 0,
+                                                                  data![index]
+                                                                      .createdDate,
+                                                                  _upgrateDate),
+                                                              data![index]
+                                                                  .kelime);
+                                                          data!.clear();
+                                                        });
                                                       },
-                                                      child: Text("Sil",
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .white)))
-                                                ],
-                                              ),
-                                            )),
-                                      );
-                                    }
-                                    return Container();
-                                  }),
-                            ),
-                          ]),
-                        ),
-                        Container(
-                          child: Column(children: [
-                            Expanded(
-                              child: ListView.builder(
-                                  itemCount: data!.length,
-                                  itemBuilder: (context, index) {
-                                    int deneme = data![index].isActive;
-                                    if (data![index].isActive == 0) {
-                                      return FlipCard(
-                                        direction: FlipDirection.HORIZONTAL,
-                                        front: Card(
-                                          child: ListTile(
-                                            title: Text(data![index].kelime,
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 17,
-                                                    fontWeight:
-                                                        FontWeight.w400)),
-                                            trailing:
-                                                Text(data![index].karsilik),
-                                            leading: Checkbox(
-                                              checkColor: Colors.white,
-                                              value: deneme != 0 ? false : true,
-                                              onChanged: (bool? value) async {
-                                                setState(() {
-                                                  deneme =
-                                                      value != true ? 0 : 1;
-                                                  _upgrateData(
-                                                      Data.withId(
-                                                          data![index].id,
-                                                          data![index].kelime,
-                                                          data![index].karsilik,
-                                                          value != true ? 1 : 0,
-                                                          data![index]
-                                                              .createdDate,
-                                                          null),
-                                                      data![index].kelime);
-                                                  data!.clear();
-                                                });
-                                              },
+                                                    ),
+                                                    minVerticalPadding: 25,
+                                                  ),
+                                                )
+                                              ],
                                             ),
                                           ),
-                                        ),
-                                        back: Card(
-                                            margin: EdgeInsets.only(top: 15),
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10, bottom: 10),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  ElevatedButton(
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                              primary: Colors
-                                                                  .purple),
-                                                      onPressed: () async {
-                                                        setState(() {});
-                                                        bool result =
-                                                            await Navigator
-                                                                .push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  upgrateData(
-                                                                      data![
-                                                                          index])),
-                                                        );
-                                                        if (result) {}
-                                                      },
-                                                      child: Text(
-                                                        "Düzenle",
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white),
-                                                      )),
-                                                  SizedBox(
-                                                    width: 15,
-                                                  ),
-                                                  ElevatedButton(
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                              primary:
-                                                                  Colors.red),
-                                                      onPressed: () {
-                                                        delete(data![index].id,
-                                                            index);
-                                                      },
-                                                      child: Text("Sil",
+                                          back: Card(
+                                              margin: EdgeInsets.only(top: 10),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 5, bottom: 5),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                                primary: Colors
+                                                                    .purple),
+                                                        onPressed: () async {
+                                                          setState(() {});
+                                                          bool result =
+                                                              await Navigator
+                                                                  .push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    upgrateData(
+                                                                        data![
+                                                                            index])),
+                                                          );
+                                                          if (result) {}
+                                                        },
+                                                        child: Text(
+                                                          "Düzenle",
                                                           style: TextStyle(
-                                                              color: Colors
-                                                                  .white)))
-                                                ],
-                                              ),
-                                            )),
-                                      );
-                                    }
-                                    return Container();
-                                  }),
-                            ),
-                          ]),
-                        ),
-                      ]),
-                    )
+                                                              color:
+                                                                  Colors.white),
+                                                        )),
+                                                    SizedBox(
+                                                      width: 15,
+                                                    ),
+                                                    ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                                primary:
+                                                                    Colors.red),
+                                                        onPressed: () {
+                                                          delete(data![index].id,
+                                                              index);
+                                                        },
+                                                        child: Text("Sil",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white)))
+                                                  ],
+                                                ),
+                                              )),
+                                        );
+                                      }
+                                      return Container();
+                                    }),
+                              ),
+                            ]),
+                          ),
+                          Container(
+                            child: Column(children: [
+                              Expanded(
+                                child: ListView.builder(
+                                    itemCount: data!.length,
+                                    itemBuilder: (context, index) {
+                                      int deneme = data![index].isActive;
+                                      if (data![index].isActive == 0) {
+                                        return FlipCard(
+                                          direction: FlipDirection.HORIZONTAL,
+                                          front: Card(
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: ListTile(
+                                                    title: Text(
+                                                        data![index].kelime,
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 17,
+                                                            fontWeight:
+                                                                FontWeight.w400)),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: ListTile(
+                                                    title: Text(
+                                                        data![index].karsilik,
+                                                        style: TextStyle(
+                                                            color: Colors.deepOrange,
+                                                            fontSize: 17,
+                                                            fontWeight:
+                                                                FontWeight.w600)),
+                                                    trailing: Checkbox(
+                                                      checkColor: Colors.white,
+                                                      value: deneme != 0
+                                                          ? false
+                                                          : true,
+                                                      onChanged:
+                                                          (bool? value) async {
+                                                        setState(() {
+                                                          deneme = value != true
+                                                              ? 0
+                                                              : 1;
+                                                          _upgrateData(
+                                                              Data.withId(
+                                                                  data![index].id,
+                                                                  data![index]
+                                                                      .kelime,
+                                                                  data![index]
+                                                                      .karsilik,
+                                                                  value != true
+                                                                      ? 1
+                                                                      : 0,
+                                                                  data![index]
+                                                                      .createdDate,
+                                                                  null),
+                                                              data![index]
+                                                                  .kelime);
+                                                          data!.clear();
+                                                        });
+                                                      },
+                                                    ),
+                                                    minVerticalPadding: 25,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          back: Card(
+                                              margin: EdgeInsets.only(top: 10),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 10, bottom: 10),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                                primary: Colors
+                                                                    .purple),
+                                                        onPressed: () async {
+                                                          setState(() {});
+                                                          bool result =
+                                                              await Navigator
+                                                                  .push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    upgrateData(
+                                                                        data![
+                                                                            index])),
+                                                          );
+                                                          if (result) {}
+                                                        },
+                                                        child: Text(
+                                                          "Düzenle",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                        )),
+                                                    SizedBox(
+                                                      width: 15,
+                                                    ),
+                                                    ElevatedButton(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                                primary:
+                                                                    Colors.red),
+                                                        onPressed: () {
+                                                          delete(data![index].id,
+                                                              index);
+                                                        },
+                                                        child: Text("Sil",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white)))
+                                                  ],
+                                                ),
+                                              )),
+                                        );
+                                      }
+                                      return Container();
+                                    }),
+                              ),
+                            ]),
+                          ),
+                        ]),
+                      ),
+                    
                   ])),
         ],
-      )),
+      )),),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           setState(() {});

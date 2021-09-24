@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app3/homepage.dart';
-
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'Notification.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   runApp(MyApp());
 }
 
@@ -17,7 +19,7 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Kelimeci',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primarySwatch: Colors.lightGreen,
+          primarySwatch: Colors.deepOrange,
         ),
         home: HomePage());
   }

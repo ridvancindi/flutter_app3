@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app3/db/dbHelper.dart';
 import 'package:flutter_app3/models/data.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
+
+import 'admobHelper.dart';
 
 class addData extends StatefulWidget {
   addData({Key? key}) : super(key: key);
@@ -10,7 +13,10 @@ class addData extends StatefulWidget {
   _addDataState createState() => _addDataState();
 }
 
+@override
 class _addDataState extends State<addData> {
+  late BannerAd _bannerAd;
+  bool _isBanneradReady = false;
   bool vis = false;
   int? sehir = 1;
   int? error;
@@ -33,6 +39,18 @@ class _addDataState extends State<addData> {
       }
       setState(() {});
     }).catchError((hata) => print("Hata $hata"));
+    _bannerAd = BannerAd(size: AdSize.banner, adUnitId: AdHelper.bannerAdUnitId, listener: BannerAdListener(
+      onAdLoaded: (_){
+        setState(() {
+          _isBanneradReady =true;
+        });
+      },
+      onAdFailedToLoad: (ad,error){
+        print("Error = ${error.message}");
+        _isBanneradReady = false;
+        ad.dispose();
+      }
+    ), request: AdRequest())..load();
   }
 
   @override
@@ -179,7 +197,9 @@ class _addDataState extends State<addData> {
                             });
                           }),
                     ),
-                  )
+                  ),
+                  SizedBox(height: 15,),
+                  if (_isBanneradReady == true) Container(width: _bannerAd.size.width.toDouble(),height: _bannerAd.size.height.toDouble(),child: AdWidget(ad: _bannerAd),)
                 ],
               ),
             ),
