@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app3/Notification.dart';
 import 'package:flutter_app3/addData.dart';
 import 'package:flutter_app3/models/settings.dart';
+import 'package:flutter_app3/quiz.dart';
 import 'package:flutter_app3/upgrateData.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
 import 'db/dbHelper.dart';
 import 'models/data.dart';
@@ -76,391 +78,407 @@ class _HomePageState extends State<HomePage>
           style: TextStyle(color: Colors.white),
         ),
       ),
-      body:SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Container(
+            child: Column(
+          children: [
+            SizedBox(
+              height: 15,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Card(
                       child: Container(
-          child: Column(
-        children: [
-          SizedBox(
-            height: 15,
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Card(
-                    child: Container(
-                      margin: EdgeInsets.only(left: 15),
-                      height: 60,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                "Kelimeler",
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontSize: 13,
-                                    color: Colors.black45,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                data!.length.toString(),
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w700),
-                              )
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              child: CircleAvatar(
-                                radius: 10,
-                                backgroundColor: Colors.green,
+                        margin: EdgeInsets.only(left: 15),
+                        height: 60,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "Kelimeler",
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.black45,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  data!.length.toString(),
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700),
+                                )
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                alignment: Alignment.centerRight,
+                                child: CircleAvatar(
+                                  radius: 10,
+                                  backgroundColor: Colors.green,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Card(
-                    child: Container(
-                      margin: EdgeInsets.only(left: 15),
-                      height: 60,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                "Ezberlenen",
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontSize: 13,
-                                    color: Colors.black45,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                pasif.toString(),
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w700),
-                              )
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              child: CircleAvatar(
-                                radius: 10,
-                                backgroundColor: Colors.red,
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: Card(
+                      child: Container(
+                        margin: EdgeInsets.only(left: 15),
+                        height: 60,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "Ezberlenen",
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.black45,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  pasif.toString(),
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700),
+                                )
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                alignment: Alignment.centerRight,
+                                child: CircleAvatar(
+                                  radius: 10,
+                                  backgroundColor: Colors.red,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: 10),
-          Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Card(
-                    child: Container(
-                      margin: EdgeInsets.only(left: 15),
-                      height: 60,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                "Bugün Ezberlenen",
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontSize: 13,
-                                    color: Colors.black45,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                upgrateDaily.toString(),
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w700),
-                              )
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              child: CircleAvatar(
-                                radius: 10,
-                                backgroundColor: Colors.blue,
+              ],
+            ),
+            SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Card(
+                      child: Container(
+                        margin: EdgeInsets.only(left: 15),
+                        height: 60,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "Bugün Ezberlenen",
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.black45,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  upgrateDaily.toString(),
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700),
+                                )
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                alignment: Alignment.centerRight,
+                                child: CircleAvatar(
+                                  radius: 10,
+                                  backgroundColor: Colors.blue,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Card(
-                    child: Container(
-                      margin: EdgeInsets.only(left: 15),
-                      height: 60,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                "Bugün Eklenen",
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontSize: 13,
-                                    color: Colors.black45,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                addDaily.toString(),
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w700),
-                              )
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              child: CircleAvatar(
-                                radius: 10,
-                                backgroundColor: Colors.yellow,
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: Card(
+                      child: Container(
+                        margin: EdgeInsets.only(left: 15),
+                        height: 60,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "Bugün Eklenen",
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.black45,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  addDaily.toString(),
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700),
+                                )
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                alignment: Alignment.centerRight,
+                                child: CircleAvatar(
+                                  radius: 10,
+                                  backgroundColor: Colors.yellow,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          DefaultTabController(
-              length: 2, // length of tabs
-              initialIndex: 0,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Container(
-                      child: TabBar(
-                          controller: tabController,
-                          labelColor: Colors.black,
-                          labelStyle: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w800),
-                          tabs: [
-                            Tab(
-                              text: "Aktiler",
-                            ),
-                            Tab(
-                              text: "Pasifler",
-                            ),
-                          ]),
-                    ),
-                     Container(
-                       height: 570,
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            DefaultTabController(
+                length: 2, // length of tabs
+                initialIndex: 0,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Container(
+                        child: TabBar(
+                            controller: tabController,
+                            labelColor: Colors.black,
+                            labelStyle: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w800),
+                            tabs: [
+                              Tab(
+                                text: "Aktiler",
+                              ),
+                              Tab(
+                                text: "Pasifler",
+                              ),
+                            ]),
+                      ),
+                      Container(
+                        height: 570,
                         child: TabBarView(controller: tabController, children: [
                           Container(
                             child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                              Expanded(
-                                child: ListView.builder(
-                                    itemCount: data!.length,
-                                    itemBuilder: (context, index) {
-                                      int deneme = data![index].isActive;
-                                      if (data![index].isActive == 1) {
-                                        return FlipCard(
-                                          direction: FlipDirection.HORIZONTAL,
-                                          front: Card(
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                  child: ListTile(
-                                                    title: Text(
-                                                        data![index].kelime,
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight.w400)),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: ListTile(
-                                                    title: Text(
-                                                        data![index].karsilik,
-                                                        style: TextStyle(
-                                                            color: Colors.deepOrange,
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight.w600)),
-                                                    trailing: Checkbox(
-                                                      checkColor: Colors.white,
-                                                      value: deneme != 0
-                                                          ? false
-                                                          : true,
-                                                      onChanged:
-                                                          (bool? value) async {
-                                                        setState(() {
-                                                          deneme = value != true
-                                                              ? 0
-                                                              : 1;
-                                                          _upgrateData(
-                                                              Data.withId(
-                                                                  data![index].id,
-                                                                  data![index]
-                                                                      .kelime,
-                                                                  data![index]
-                                                                      .karsilik,
-                                                                  value != true
-                                                                      ? 1
-                                                                      : 0,
-                                                                  data![index]
-                                                                      .createdDate,
-                                                                  _upgrateDate),
-                                                              data![index]
-                                                                  .kelime);
-                                                          data!.clear();
-                                                        });
-                                                      },
-                                                    ),
-                                                    minVerticalPadding: 25,
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          back: Card(
-                                              margin: EdgeInsets.only(top: 10),
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 5, bottom: 5),
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Expanded(
+                                    child: ListView.builder(
+                                        itemCount: data!.length,
+                                        itemBuilder: (context, index) {
+                                          int deneme = data![index].isActive;
+                                          if (data![index].isActive == 1) {
+                                            return FlipCard(
+                                              direction:
+                                                  FlipDirection.HORIZONTAL,
+                                              front: Card(
                                                 child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
                                                   children: [
-                                                    ElevatedButton(
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                                primary: Colors
-                                                                    .purple),
-                                                        onPressed: () async {
-                                                          setState(() {});
-                                                          bool result =
-                                                              await Navigator
-                                                                  .push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (context) =>
-                                                                    upgrateData(
-                                                                        data![
-                                                                            index])),
-                                                          );
-                                                          if (result) {}
-                                                        },
-                                                        child: Text(
-                                                          "Düzenle",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white),
-                                                        )),
-                                                    SizedBox(
-                                                      width: 15,
-                                                    ),
-                                                    ElevatedButton(
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                                primary:
-                                                                    Colors.red),
-                                                        onPressed: () {
-                                                          delete(data![index].id,
-                                                              index);
-                                                        },
-                                                        child: Text("Sil",
+                                                    Expanded(
+                                                      child: ListTile(
+                                                        title: Text(
+                                                            data![index].kelime,
                                                             style: TextStyle(
                                                                 color: Colors
-                                                                    .white)))
+                                                                    .black,
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400)),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      child: ListTile(
+                                                        title: Text(
+                                                            data![index]
+                                                                .karsilik,
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .deepOrange,
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600)),
+                                                        trailing: Checkbox(
+                                                          checkColor:
+                                                              Colors.white,
+                                                          value: deneme != 0
+                                                              ? false
+                                                              : true,
+                                                          onChanged: (bool?
+                                                              value) async {
+                                                            setState(() {
+                                                              deneme =
+                                                                  value != true
+                                                                      ? 0
+                                                                      : 1;
+                                                              _upgrateData(
+                                                                  Data.withId(
+                                                                      data![index]
+                                                                          .id,
+                                                                      data![index]
+                                                                          .kelime,
+                                                                      data![index]
+                                                                          .karsilik,
+                                                                      value !=
+                                                                              true
+                                                                          ? 1
+                                                                          : 0,
+                                                                      data![index]
+                                                                          .createdDate,
+                                                                      _upgrateDate),
+                                                                  data![index]
+                                                                      .kelime);
+                                                              data!.clear();
+                                                            });
+                                                          },
+                                                        ),
+                                                        minVerticalPadding: 25,
+                                                      ),
+                                                    )
                                                   ],
                                                 ),
-                                              )),
-                                        );
-                                      }
-                                      return Container();
-                                    }),
-                              ),
-                            ]),
+                                              ),
+                                              back: Card(
+                                                  margin:
+                                                      EdgeInsets.only(top: 10),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 5, bottom: 5),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        ElevatedButton(
+                                                            style: ElevatedButton
+                                                                .styleFrom(
+                                                                    primary: Colors
+                                                                        .purple),
+                                                            onPressed:
+                                                                () async {
+                                                              setState(() {});
+                                                              bool result =
+                                                                  await Navigator
+                                                                      .push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) =>
+                                                                        upgrateData(
+                                                                            data![index])),
+                                                              );
+                                                              if (result) {}
+                                                            },
+                                                            child: Text(
+                                                              "Düzenle",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white),
+                                                            )),
+                                                        SizedBox(
+                                                          width: 15,
+                                                        ),
+                                                        ElevatedButton(
+                                                            style: ElevatedButton
+                                                                .styleFrom(
+                                                                    primary:
+                                                                        Colors
+                                                                            .red),
+                                                            onPressed: () {
+                                                              delete(
+                                                                  data![index]
+                                                                      .id,
+                                                                  index);
+                                                            },
+                                                            child: Text("Sil",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white)))
+                                                      ],
+                                                    ),
+                                                  )),
+                                            );
+                                          }
+                                          return Container();
+                                        }),
+                                  ),
+                                ]),
                           ),
                           Container(
                             child: Column(children: [
@@ -483,7 +501,8 @@ class _HomePageState extends State<HomePage>
                                                             color: Colors.black,
                                                             fontSize: 17,
                                                             fontWeight:
-                                                                FontWeight.w400)),
+                                                                FontWeight
+                                                                    .w400)),
                                                   ),
                                                 ),
                                                 Expanded(
@@ -491,10 +510,12 @@ class _HomePageState extends State<HomePage>
                                                     title: Text(
                                                         data![index].karsilik,
                                                         style: TextStyle(
-                                                            color: Colors.deepOrange,
+                                                            color: Colors
+                                                                .deepOrange,
                                                             fontSize: 17,
                                                             fontWeight:
-                                                                FontWeight.w600)),
+                                                                FontWeight
+                                                                    .w600)),
                                                     trailing: Checkbox(
                                                       checkColor: Colors.white,
                                                       value: deneme != 0
@@ -508,7 +529,8 @@ class _HomePageState extends State<HomePage>
                                                               : 1;
                                                           _upgrateData(
                                                               Data.withId(
-                                                                  data![index].id,
+                                                                  data![index]
+                                                                      .id,
                                                                   data![index]
                                                                       .kelime,
                                                                   data![index]
@@ -574,7 +596,8 @@ class _HomePageState extends State<HomePage>
                                                                 primary:
                                                                     Colors.red),
                                                         onPressed: () {
-                                                          delete(data![index].id,
+                                                          delete(
+                                                              data![index].id,
                                                               index);
                                                         },
                                                         child: Text("Sil",
@@ -593,26 +616,75 @@ class _HomePageState extends State<HomePage>
                           ),
                         ]),
                       ),
-                    
-                  ])),
-        ],
-      )),),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          setState(() {});
-          bool result = await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => addData()),
-          );
-          if (result) {
-            getData();
-          }
-        },
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
+                    ])),
+          ],
+        )),
       ),
+      floatingActionButton: SpeedDial(
+        backgroundColor: Colors.deepOrange,
+        foregroundColor: Colors.white,
+        closeManually: true,
+        animatedIcon: AnimatedIcons.menu_close,
+        children: [
+          SpeedDialChild(
+            backgroundColor: Colors.blue,
+            foregroundColor: Colors.white,
+            child: Icon(Icons.add),
+            label: "Kelime Ekle",
+            onTap: () async {
+              setState(() {});
+              bool result = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => addData()),
+              );
+              if (result) {
+                getData();
+              }
+            },
+          ),
+          SpeedDialChild(
+            backgroundColor: Colors.green,
+            foregroundColor: Colors.white,
+            child: Icon(Icons.receipt_long_rounded),
+            label: "Quiz",
+            onTap: () async {
+              if (data!.length - pasif >= 4) {
+                setState(() {});
+                bool? result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => QuizPage(data!)),
+                );
+                if (result == true) {
+                  getData();
+                } else if (result == null) {
+                  getData();
+                }
+              } else {
+                _scaffoldkey.currentState!.showSnackBar(SnackBar(
+                  content: Text("Minimum 4 Tane Aktif Kelimeniz Bulunmalı"),
+                  duration: Duration(seconds: 2),
+                ));
+              }
+            },
+          )
+        ],
+      ),
+      //FloatingActionButton(
+      //   onPressed: () async {
+      //     setState(() {});
+      //     bool result = await Navigator.push(
+      //       context,
+      //       MaterialPageRoute(builder: (context) => addData()),
+      //     );
+      //     if (result) {
+      //       getData();
+      //     }
+      //   },
+      //   child: Icon(
+      //     Icons.add,
+      //     color: Colors.white,
+      //   ),
+      // ),
     );
   }
 
