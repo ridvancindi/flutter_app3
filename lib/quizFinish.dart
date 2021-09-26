@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class quizFinish extends StatelessWidget {
-  List falseQuestion;
+  var falseQuestion = <Map<String,dynamic>>[];
   int trueNum;
   int falseNum;
-  List data = [];
-  quizFinish(this.falseQuestion, this.trueNum, this.falseNum, this.data);
+  List selectedUsers = [];
+  quizFinish(this.falseQuestion, this.trueNum, this.falseNum);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -151,7 +151,7 @@ class quizFinish extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: ListTile(
-                                  title: Text(falseQuestion[index].kelime,
+                                  title: Text(falseQuestion[index]["kelime"] ,
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 15,
@@ -160,13 +160,12 @@ class quizFinish extends StatelessWidget {
                               ),
                               Expanded(
                                 child: ListTile(
-                                  title: Text(falseQuestion[index].karsilik,
+                                  title: Text(falseQuestion[index]["hata"],
                                       style: TextStyle(
                                           color: Colors.deepOrange,
                                           fontSize: 15,
                                           fontWeight: FontWeight.w600)),
-                                  trailing: Text(
-                                      data[falseQuestion[index].id].karsilik,
+                                  trailing: Text(falseQuestion[index]["karsilik"],
                                       style: TextStyle(
                                           color: Colors.green,
                                           fontSize: 15,

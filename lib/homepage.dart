@@ -617,7 +617,7 @@ class _HomePageState extends State<HomePage>
                         ]),
                       ),
                     ])),
-          ],
+],
         )),
       ),
       floatingActionButton: SpeedDial(
@@ -647,6 +647,31 @@ class _HomePageState extends State<HomePage>
             foregroundColor: Colors.white,
             child: Icon(Icons.receipt_long_rounded),
             label: "Quiz",
+            onTap: () async {
+              if (data!.length - pasif >= 4) {
+                setState(() {});
+                bool? result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => QuizPage(data!)),
+                );
+                if (result == true) {
+                  getData();
+                } else if (result == null) {
+                  getData();
+                }
+              } else {
+                _scaffoldkey.currentState!.showSnackBar(SnackBar(
+                  content: Text("Minimum 4 Tane Aktif Kelimeniz Bulunmalı"),
+                  duration: Duration(seconds: 2),
+                ));
+              }
+            },
+          ),
+          SpeedDialChild(
+            backgroundColor: Colors.purple,
+            foregroundColor: Colors.white,
+            child: Icon(Icons.receipt_long_rounded),
+            label: "Soru",
             onTap: () async {
               if (data!.length - pasif >= 4) {
                 setState(() {});

@@ -19,7 +19,7 @@ class _QuizPageState extends State<QuizPage> {
   List<Data> data;
   _QuizPageState(this.data);
   List question = [];
-  List falseQuestion = [];
+  var falseQuestion = <Map<String,dynamic>>[];
   int id = 0;
   var _formKey = GlobalKey<FormState>();
   var _reply = TextEditingController();
@@ -44,7 +44,8 @@ class _QuizPageState extends State<QuizPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => quizFinish(falseQuestion,trueNum,falseNum,data)),
+                            builder: (context) => quizFinish(
+                                falseQuestion, trueNum, falseNum)),
                       );
                     },
                     icon: Icon(Icons.exit_to_app_outlined)),
@@ -80,17 +81,18 @@ class _QuizPageState extends State<QuizPage> {
                           style: TextStyle(fontSize: 15),
                           autofocus: false,
                           validator: (kontroledilecekname) {
-                            if (kontroledilecekname != question[id].karsilik) {
-                              falseQuestion.add(question[id]);
+                            if (kontroledilecekname!.isEmpty) {
+                              return "Burası Boş Olamaz";
+                            }
+                            else if (kontroledilecekname != question[id].karsilik) {
+                              falseQuestion.add({"kelime" : question[id].kelime , "karsilik" : question[id].karsilik , "hata" : _reply.text});
                               falseNum++;
                               return null;
                             } else if (kontroledilecekname ==
                                 question[id].karsilik) {
                               trueNum++;
                               return null;
-                            } else if (kontroledilecekname!.isEmpty) {
-                              return "Burası Boş Olamaz";
-                            }
+                            } 
                           },
                           decoration: InputDecoration(
                             border: InputBorder.none,
@@ -112,7 +114,12 @@ class _QuizPageState extends State<QuizPage> {
                       setState(() {
                         if (_formKey.currentState!.validate()) {
                           if (id == question.length - 1) {
-                            print("hata");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => quizFinish(
+                                      falseQuestion, trueNum, falseNum)),
+                            );
                           } else {
                             _reply.clear();
                             id++;

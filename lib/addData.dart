@@ -39,18 +39,20 @@ class _addDataState extends State<addData> {
       }
       setState(() {});
     }).catchError((hata) => print("Hata $hata"));
-    _bannerAd = BannerAd(size: AdSize.banner, adUnitId: AdHelper.bannerAdUnitId, listener: BannerAdListener(
-      onAdLoaded: (_){
-        setState(() {
-          _isBanneradReady =true;
-        });
-      },
-      onAdFailedToLoad: (ad,error){
-        print("Error = ${error.message}");
-        _isBanneradReady = false;
-        ad.dispose();
-      }
-    ), request: AdRequest())..load();
+    _bannerAd = BannerAd(
+        size: AdSize.mediumRectangle,
+        adUnitId: AdHelper.bannerAdUnitId,
+        listener: BannerAdListener(onAdLoaded: (_) {
+          setState(() {
+            _isBanneradReady = true;
+          });
+        }, onAdFailedToLoad: (ad, error) {
+          print("Error = ${error.message}");
+          _isBanneradReady = false;
+          ad.dispose();
+        }),
+        request: AdRequest())
+      ..load();
   }
 
   @override
@@ -190,16 +192,23 @@ class _addDataState extends State<addData> {
                             setState(() {
                               if (_formKey.currentState!.validate()) {
                                 addData(
-                                    Data(_name.text, _surname.text, 1, _createdDate,
-                                        null),
+                                    Data(_name.text, _surname.text, 1,
+                                        _createdDate, null),
                                     _name.text);
                               } else {}
                             });
                           }),
                     ),
                   ),
-                  SizedBox(height: 15,),
-                  if (_isBanneradReady == true) Container(width: _bannerAd.size.width.toDouble(),height: _bannerAd.size.height.toDouble(),child: AdWidget(ad: _bannerAd),)
+                  SizedBox(
+                    height: 15,
+                  ),
+                  if (_isBanneradReady == true)
+                    Container(
+                      width: _bannerAd.size.width.toDouble(),
+                      height: _bannerAd.size.height.toDouble(),
+                      child: AdWidget(ad: _bannerAd),
+                    )
                 ],
               ),
             ),
